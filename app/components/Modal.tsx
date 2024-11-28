@@ -10,8 +10,8 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
+// import { zodResolver } from '@hookform/resolvers/zod';
 
 
 
@@ -19,6 +19,8 @@ interface ModalProps {
   onClose: () => void;
   
 }
+
+
 
 
 
@@ -35,10 +37,11 @@ const FormSchema = z.object({
 });
 
 
+type FormData = z.infer<typeof FormSchema>;
+
+
 const Modal: React.FC<ModalProps> = ({ onClose }) => {
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm({
-        resolver: zodResolver(FormSchema),
-    });
+    const { register, handleSubmit , setValue} = useForm<FormData>();
     
     const [states, setStates] = useState<string[]>([]);
     const [cities, setCities] = useState<string[]>([]);
@@ -122,8 +125,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     }, [receiverState]);
 
     
-    const onSubmit = (data: any) => {
-    console.log(data);
+    const onSubmit: SubmitHandler<FormData> = (data) => {
+        console.log(data);
     // Handle form submission logic
     };
 
@@ -204,13 +207,15 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             <div className='w-[339px] text-left'>
             <label className="text-[14px] text-[#A9A9AE] laeding-[21px] font-medium">City</label>
             <div className="pt-[5px]">
-                <Select onValueChange={(value) => setValue('city', value)} 
-                 disabled={loadingCities || !receiverState}>
+                <Select
+                    onValueChange={(value) => setValue('city', value)}
+                    disabled={loadingCities || !receiverState}
+                >
                 <SelectTrigger className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
                     <SelectValue placeholder={loadingCities ? 'Loading cities...' : 'Select your city of residence'} />
                 </SelectTrigger>
                 <SelectContent>
-                    {cities.map((city: any) => (
+                    {cities.map((city: string) => ( // Specify the type of city here
                     <SelectItem key={city} value={city}>
                         {city}
                     </SelectItem>

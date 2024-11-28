@@ -8,7 +8,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button,
   IconButton,
   TablePagination,
 } from '@mui/material';

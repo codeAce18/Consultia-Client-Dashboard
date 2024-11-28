@@ -10,8 +10,6 @@ import {
   TablePagination,
   IconButton,
   Paper,
-  Menu,
-  MenuItem,
   Typography,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";

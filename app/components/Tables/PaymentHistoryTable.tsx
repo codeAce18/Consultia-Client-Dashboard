@@ -290,7 +290,10 @@ const PaymentHistoryTable = () => {
     return item.status === filter;
   });
 
-  const handleChangePage = (event: any, newPage: React.SetStateAction<number>) => {
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null, 
+    newPage: number
+  ) => {
     setPage(newPage);
   };
 

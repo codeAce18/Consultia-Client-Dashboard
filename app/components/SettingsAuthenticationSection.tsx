@@ -19,7 +19,7 @@ import {
 
 import {Button} from "@/components/ui/button";
 
-import {InputOTP} from "@/components/ui/input-otp"
+// import {InputOTP} from "@/components/ui/input-otp"
 
 import { Switch } from "@/components/ui/switch"
 
@@ -217,7 +217,7 @@ const SettingsAuthenticationSection = () => {
             <div className="space-y-4">
               <FormField
                 name="otp"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">
                       OTP Code
@@ -260,27 +260,27 @@ const SettingsAuthenticationSection = () => {
             </DialogHeader>
             <div className="space-y-4">
               <FormField
-                name="otp"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">
-                      OTP Code
-                    </FormLabel>
-    
-                    {otp.map((digit, index) => (
-                      <Input
-                        key={index}
-                        value={digit}
-                        onChange={(e) => handleInputChange(e, index)} // Handle the change for each input
-                        className="otp-input"
-                        maxLength={1} // Each input should accept only one character
-                        type="text"
-                        autoFocus={index === 0} // Focus on the first input initially
-                      />
-                    ))}
-  
-                    <FormMessage />
-                  </FormItem>
+                  name="otp"
+                  render={() => ( // No need to destructure 'field' since it's not used
+                    <FormItem>
+                      <FormLabel className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">
+                        OTP Code
+                      </FormLabel>
+
+                      {otp.map((digit, index) => (
+                        <Input
+                          key={index}
+                          value={digit}
+                          onChange={(e) => handleInputChange(e, index)} // Handle the change for each input
+                          className="otp-input"
+                          maxLength={1} // Each input should accept only one character
+                          type="text"
+                          autoFocus={index === 0} // Focus on the first input initially
+                        />
+                      ))}
+
+                      <FormMessage />
+                    </FormItem>
                 )}
               />
             </div>

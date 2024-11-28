@@ -6,7 +6,7 @@ import Image from "next/image"
 
 import ImageProfile from "../../public/assets/ImageProfile.svg"
 
-import { Message, WebSocketMessage, ApiResponse, UploadResponse, MessageStatus, ChatError  } from '@/types';
+import { WebSocketMessage, ApiResponse, UploadResponse, MessageStatus, ChatError  } from '@/types';
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
@@ -14,12 +14,24 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://your-actual-api-endpoint/chat';
 const UPLOAD_ENDPOINT = process.env.NEXT_PUBLIC_UPLOAD_ENDPOINT || 'http://your-actual-api-endpoint/upload';
-const USER_AVATAR = process.env.NEXT_PUBLIC_USER_AVATAR || '/default-avatar.jpg';
+// const USER_AVATAR = process.env.NEXT_PUBLIC_USER_AVATAR || '/default-avatar.jpg';
 
 import { Input } from '@/components/ui/input';
 import { Separator } from "@/components/ui/separator"
 import { SearchIcon } from 'lucide-react';
 
+type Sender = 'user' | 'bot';
+type Status = 'sent' | 'delivered' | 'read' | 'error';
+
+interface Message {
+  id: number;
+  text: string;
+  sender: Sender;
+  timestamp: string;
+  status: Status;
+  fileUrl?: string; // Optional property
+  fileType?: string; // Optional property
+}
 
 
 
@@ -93,14 +105,15 @@ const MessagesContent: React.FC = () => {
     }, []);
   
     // Type guard for Message
-    const isValidMessage = (message: any): message is Message => {
+    const isValidMessage = (message: unknown): message is Message => {
       return (
         typeof message === 'object' &&
-        typeof message.id === 'number' &&
-        typeof message.text === 'string' &&
-        (message.sender === 'user' || message.sender === 'bot') &&
-        typeof message.timestamp === 'string' &&
-        ['sent', 'delivered', 'read', 'error'].includes(message.status)
+        message !== null && // Ensure it's not null
+        typeof (message as Message).id === 'number' &&
+        typeof (message as Message).text === 'string' &&
+        ['user', 'bot'].includes((message as Message).sender) &&
+        typeof (message as Message).timestamp === 'string' &&
+        ['sent', 'delivered', 'read', 'error'].includes((message as Message).status)
       );
     };
   
@@ -299,7 +312,7 @@ const MessagesContent: React.FC = () => {
         const newMessage = { ...message, status: 'sent' as const };
         setMessages(prev => [...prev, newMessage]);
         try {
-          const response = await fetchBotResponse(message.text);
+          // const response = await fetchBotResponse(message.text);
           const event = { preventDefault: () => {} } as FormEvent<HTMLFormElement>;
           await handleSendMessage(event);
         } catch (error) {

@@ -9,7 +9,7 @@ interface TopUpWalletContentProps {
     onClose?: () => void;
   }
 
-const TopUpWalletContent: React.FC<TopUpWalletContentProps> = ({ onClose }) => {
+const TopUpWalletContent: React.FC<TopUpWalletContentProps> = () => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("debitCard");
 
     const handlePaymentMethodChange = (method: string) => {

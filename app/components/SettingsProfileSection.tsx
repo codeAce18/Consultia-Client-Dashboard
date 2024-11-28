@@ -116,9 +116,9 @@ const SettingsProfileSection = () => {
 
       
 
-      const handleEdit = () => {
-        setIsEditing(true);
-      };
+      // const handleEdit = () => {
+      //   setIsEditing(true);
+      // };
     
       const handleCancel = () => {
         setIsEditing(false);

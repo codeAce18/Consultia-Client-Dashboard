@@ -8,7 +8,17 @@ import InOutIcon from "../../../public/assets/InOutIcon.svg"
 
 import CrossX from "../../../public/assets/CrossX.svg"
 
-const invoiceData = [
+
+type Invoice = {
+  id: number;
+  invoice: string;
+  date: string;
+  dueDate: string;
+  total: string;
+  status: 'Paid' | 'Unpaid' | 'Pending';
+};
+
+const invoiceData: Invoice[]  = [
     { id: 1, invoice: 'INV234567', date: 'July 24, 2024', dueDate: 'September 24, 2024', total: '₦114,000.00', status: 'Paid' },
     { id: 2, invoice: 'INV234568', date: 'July 24, 2024', dueDate: 'September 24, 2024', total: '₦114,000.00', status: 'Unpaid' },
     { id: 3, invoice: 'INV234569', date: 'July 24, 2024', dueDate: 'September 24, 2024', total: '₦114,000.00', status: 'Pending' },
@@ -30,7 +40,7 @@ const InvoiceTable: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<'All' | 'Paid' | 'Unpaid' | 'Pending'>('All');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [selectedInvoice, setSelectedInvoice] = useState<any>(null);
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
 
   // Filter data based on the status selected
   const filteredData = statusFilter === 'All'
@@ -47,7 +57,7 @@ const InvoiceTable: React.FC = () => {
   };
 
   // Handle status button click
-  const handleStatusClick = (invoice: any) => {
+  const handleStatusClick = (invoice: Invoice) => {
     setSelectedInvoice(invoice);
   };
 
