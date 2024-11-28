@@ -2,20 +2,139 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+body {
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+
+@keyframes steadyFill {
+  0% {
+    background-size: 0% 100%;
+    color: #41404B; /* Default text color */
+  }
+  50% {
+    background-size: 50% 100%; /* Pause in the middle */
+    color: #FFFFFF; /* Change text to white when halfway filled */
+  }
+  60% {
+    background-size: 50% 100%; /* Maintain the center briefly */
+  }
+  100% {
+    background-size: 100% 100%; /* Complete fill to the right */
+    color: #FFFFFF;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.bg-progressive-fill {
+  background: linear-gradient(to right, #5B52B6 100%, #FFFFFF 0);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  animation: steadyFill 5s linear forwards; /* Adjust duration as needed for slower movement */
 }
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
+
+
+@keyframes fillBackgroundProgressively {
+  0% {
+    background-size: 0 100%;
+  }
+  100% {
+    background-size: 100% 100%;
+  }
+}
+
+.bg-loading {
+  background: linear-gradient(to right, #5B52B6 100%, #FFFFFF 0);
+  background-size: 200% 100%;
+  animation: fillBackgroundProgressively 5s ease forwards;
+}
+
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+
+
+/* styles/scrollbar.css */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;  /* Width of the scrollbar */
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #CFCDEC; /* Background of the scrollbar track */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #CFCDEC; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #CFCDEC; /* Color of the scrollbar thumb on hover */
+}
+
+/* For Firefox */
+.scrollbar-thin {
+  scrollbar-width: thin; /* Set the scrollbar width */
+  scrollbar-color: #CFCDEC; /* Color of the scrollbar thumb and track */
+}
+
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+
+input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #D0D5DD;
+  border-radius: 50%;
+  background-color: transparent;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+input[type="radio"]:checked {
+  background-color: #5B52B6;
+  border: 2px solid #5B52B6;
+}
+
+input[type="radio"]:checked::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+
