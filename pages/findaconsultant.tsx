@@ -101,9 +101,12 @@ const jobOrderSchema = z.object({
 
 const FindAConsultant = () => {
     const [fileName, setFileName] = useState<string | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [error, setError] = useState<string | null>(null);
     const [isSecondSheetOpen, setIsSecondSheetOpen] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [formData, setFormData] = useState<JobOrderFormData | null>(null);
+
 
     const { register, handleSubmit, setValue, watch , formState: { errors } } = useForm<JobOrderFormData>({
         resolver: zodResolver(jobOrderSchema),
@@ -165,7 +168,7 @@ const FindAConsultant = () => {
     };
 
 
-    const [isJobOrderOverlayVisible, setIsJobOrderOverlayVisible] = useState(false);
+
 
 
     const [loading, setLoading] = useState(false);

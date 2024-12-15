@@ -23,7 +23,6 @@ import Status from "../../../public/assets/Status.svg"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { format } from 'date-fns';
 
-import { Button } from "@/components/ui/button";
 
 import OngoingTask from "../OngoingTask"
 
@@ -178,15 +177,15 @@ const JobOrdersTable: React.FC = () => {
     setSelectedOrder(null);
   };
 
-  const handleChangeStatus = () => {
-    if (selectedOrder) {
-      const updatedOrder = {
-        ...selectedOrder,
-        status: 'Ongoing' as const
-      };
-      setSelectedOrder(updatedOrder);
-    }
-  };
+  // const handleChangeStatus = () => {
+  //   if (selectedOrder) {
+  //     const updatedOrder = {
+  //       ...selectedOrder,
+  //       status: 'Ongoing' as const
+  //     };
+  //     setSelectedOrder(updatedOrder);
+  //   }
+  // };
   
 
   return (

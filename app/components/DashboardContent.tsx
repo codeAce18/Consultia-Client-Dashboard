@@ -167,6 +167,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
     const router = useRouter();
     const [placeholderText, setPlaceholderText] = useState("Search...");
     const [fileName, setFileName] = useState<string | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [error, setError] = useState<string | null>(null);
     const [isSecondSheetOpen, setIsSecondSheetOpen] = useState(false);
     const [formData, setFormData] = useState<JobOrderFormData | null>(null);

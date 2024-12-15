@@ -17,9 +17,6 @@ import {
     DialogTitle 
   } from '@/components/ui/dialog';
   import { 
-    CreditCard, 
-    WalletCards, 
-    Send, 
     Check 
   } from 'lucide-react';
 
