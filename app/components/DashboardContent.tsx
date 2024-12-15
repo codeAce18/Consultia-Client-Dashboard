@@ -20,7 +20,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// import { useState } from 'react';
 
 import NotificationIcon from "../../public/assets/NotificationIcon.svg"
 
@@ -373,7 +372,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
                     </div>
 
                     <Sheet>
-                        {/* Trigger to open the sheet */}
+    
                         <SheetTrigger asChild>
                             <button className="bg-[#5B52B6] flex items-center gap-[10px] rounded-[8px] p-[10px] w-[190px]">
                             <Image width={24} height={24} src={AddCircle} alt="AddCircle" />
@@ -381,20 +380,20 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
                             </button>
                         </SheetTrigger>
 
-                        {/* Sheet content */}
+
                         <SheetContent
                             side="right"
                             className="flex flex-col overflow-y-auto items-start p-6 bg-white space-y-4 w-full max-w-md shadow-lg"
                         >
-                            {/* Header */}
+             
                             <div>
                                 <h2 className="text-xl font-bold">Job Order Form</h2>
                                 <p className="text-gray-500 pt-[5px]">Kindly fill out the fields provided below</p>
                             </div>
 
-                            {/* Form */}
+    
                             <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4">
-                                {/* Consultancy Type */}
+ 
                                 <div>
                                     <Label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Consultancy Type</Label>
                                     <div className='pt-[10px]'>
@@ -411,7 +410,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
                                     {errors.consultancyType && <p className="text-red-500">{errors.consultancyType.message}</p>}
                                 </div>
 
-                                {/* Service Type */}
+
                                 <div>
                                     <Label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Service Type</Label>
                                     <div className='pt-[10px]'>
@@ -428,22 +427,22 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
                                     {errors.serviceType && <p className="text-red-500">{errors.serviceType.message}</p>}
                                 </div>
 
-                                {/* Tags */}
+                   
                                 <div>
                                     <Label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Tags</Label>
                                     <div className='pt-[10px]'><Input {...register("tags")} type="text" placeholder="Enter tags" className="w-full focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none" /></div>
                                 </div>
 
-                                {/* Priority */}
+                  
                                 <div>
                                     <Label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Priority</Label>
                                     <div className='pt-[10px]'>
                                         <Select
-                                            onValueChange={(value: string) => setValue("priority", value)} // Set form value when an option is selected
-                                            defaultValue={""} // Optional default
+                                            onValueChange={(value: string) => setValue("priority", value)}
+                                            defaultValue={""} 
                                             >
                                             <SelectTrigger className="w-full focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
-                                                <span>{priority || "Select priority"}</span> {/* Display selected value or placeholder */}
+                                                <span>{priority || "Select priority"}</span> 
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="low">Low</SelectItem>
@@ -455,16 +454,16 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
                                     {errors.priority && <p className="text-red-500">{errors.priority.message}</p>}
                                 </div>
 
-                                {/* Choose a Consultant */}
+                         
                                 <div>
                                     <Label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Choose a Consultant</Label>
                                     <div className='pt-[10px]'>
                                         <Select
-                                            onValueChange={(value: string) => setValue("consultant", value)} // Set form value when an option is selected
-                                            defaultValue={""} // Optional default
+                                            onValueChange={(value: string) => setValue("consultant", value)} 
+                                            defaultValue={""} 
                                             >
                                             <SelectTrigger className="w-full focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
-                                                <span>{consultant || "Select a consultant"}</span> {/* Display selected value or placeholder */}
+                                                <span>{consultant || "Select a consultant"}</span> 
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="consultant1">Consultant 1</SelectItem>
@@ -475,7 +474,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
                                     {errors.consultant && <p className="text-red-500">{errors.consultant.message}</p>}
                                 </div>
 
-                                {/* Budget and Deadline */}
+
                                 <div className="flex space-x-4">
                                     <div className="flex-1">
                                         <Label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Budget</Label>
@@ -490,7 +489,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
                                     </div>
                                 </div>
 
-                                {/* Project Description */}
+
                                 <div className='pb-[10px]'>
                                     <Label className="text-[14px] text-[#101828] leading-[24px] font-medium">Project Description</Label>
                                     <div className='pt-[10px]'>
@@ -499,7 +498,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
                                     </div>
                                 </div>
 
-                                {/* Upload Field */}
+ 
                                 <Label className="text-[14px] text-[#101828] leading-[24px] font-medium">File Upload</Label>
                                 <div className="border-dashed h-[96px] border-[1px] border-[#5B52B6] rounded-[8px] bg-[#F1F1F1] p-4 text-center relative">
                                     <Input
@@ -519,11 +518,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
                                         {fileName}
                                     </p>
                                     )}
-
-                                    {error && <p className="text-red-500 mt-2">{error}</p>}
-                                    {/* {errors.uploadFile && !error && (
-                                    <p className="text-red-500 mt-2">{errors.uploadFile.message}</p>
-                                    )} */}
                                 </div>
 
                                 <div className="flex items-start justify-between mt-2">
@@ -536,7 +530,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
                                 </div>
 
 
-                                {/* Need Help Text and Submit Button */}
+                                
                                 <div className="flex items-center justify-between w-full pt-4">
                                     <p className="text-[#5B52B6] font-bold">Need help?</p>
                                     <Button type="submit" className="bg-[#5B52B6] text-white">Submit Job Order</Button>
@@ -550,7 +544,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
                                 <h2 className="text-xl font-bold">Review Job Order</h2>
                                 <p className="text-gray-500 pt-[5px]">Please confirm the details below:</p>
 
-                                {/* Displaying form data */}
                                 <div className="space-y-2">
                                     <p><strong>Consultancy Type:</strong> {formData?.consultancyType}</p>
                                     
@@ -571,7 +564,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
 
                 
             <div className="pt-10">
-                <div className="grid grid-cols-4 gap-10">
+                <div className="grid grid-cols-4 gap-8">
 
                     <div className="bg-[#FFFFFF] rounded-[8px] border-[1px] shadow-custom  border-[#F0F0F9] max-w-[260px] p-[16px]">
                         <div className="flex items-center gap-[5px]">
@@ -610,7 +603,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
 
             <div className="pt-10">
 
-                <div className="flex gap-10 w-full">
+                <div className="flex gap-4 w-full">
                     <ExpenditureAnalysisChart  />
 
 

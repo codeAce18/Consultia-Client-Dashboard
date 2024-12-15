@@ -2,12 +2,25 @@ import Image from "next/image"
 import Link from "next/link"
 import { Input } from '@/components/ui/input';
 import { Separator } from "@/components/ui/separator"
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
 import {
     Drawer,
     DrawerClose,
     DrawerContent,
     DrawerTrigger,
 } from "@/components/ui/drawer";
+
+import { Textarea } from '@/components/ui/textarea';  
+
+import UploadIcon from "../public/assets/UploadIcon.svg"
+
+import {
+    Sheet,
+    SheetContent,
+    SheetTrigger,
+} from "@/components/ui/sheet"
 
 import { SearchIcon } from 'lucide-react';
 
@@ -32,7 +45,21 @@ import Arrowdown from "../public/assets/Arrowdown.svg"
 
 import LogOutIcon from "../public/assets/LogOutIcon.svg"
 
-import { useState } from 'react';
+import AssignedToIcon from "../public/assets/AssignedToIcon.svg"
+
+import BrandingAssets from "../public/assets/BrandingAssets.svg"
+
+import GuidelinesPdf  from "../public/assets/GuidelinesPdf.svg"
+
+
+import Plus  from "../public/assets/Plus.svg"
+
+import  CrossX  from "../public/assets/CrossX.svg"
+
+import  Done  from "../public/assets/Done.svg"
+
+
+import { useState } from 'react'
 
 import "../app/globals.css"
 
@@ -51,10 +78,73 @@ import BackIcon from "../public/assets/BackIcon.svg"
 
 import { Skeleton } from "@/components/ui/skeleton"
 
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+
+const jobOrderSchema = z.object({
+    consultancyType: z.string().nonempty("Consultancy type is required"),
+    serviceType: z.string().nonempty("Service type is required"),
+    tags: z.string().optional(),
+    priority: z.string().nonempty("Priority is required"),
+    consultant: z.string().nonempty("Please choose a consultant"),
+    budget: z.number().positive("Budget must be greater than zero"),
+    deadline: z.string().nonempty("Deadline is required"),
+    projectDescription: z.string().min(10, "Description must be at least 10 characters"),
+    uploadFile: z.any(),
+  });
+  type JobOrderFormData = z.infer<typeof jobOrderSchema>;
+
 
 
 
 const FindAConsultant = () => {
+    const [fileName, setFileName] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [isSecondSheetOpen, setIsSecondSheetOpen] = useState(false);
+    const [formData, setFormData] = useState<JobOrderFormData | null>(null);
+
+    const { register, handleSubmit, setValue, watch , formState: { errors } } = useForm<JobOrderFormData>({
+        resolver: zodResolver(jobOrderSchema),
+    });
+    
+    const onSubmit = (data: JobOrderFormData) => {
+        setFormData(data); 
+        setIsSecondSheetOpen(true); 
+    };
+ 
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+    
+        if (file) {
+          setError(null); // Reset error
+    
+          // Validate file type
+          const validTypes = ["image/jpeg", "image/png"];
+          if (!validTypes.includes(file.type)) {
+            setError("Only JPEG and PNG formats are supported.");
+            return;
+          }
+    
+          // Validate file size (max 25MB)
+          const maxSizeMB = 25;
+          if (file.size > maxSizeMB * 1024 * 1024) {
+            setError("File size must be less than 25MB.");
+            return;
+          }
+    
+          // File is valid, set the file name and form value
+          setFileName(file.name);
+          setValue("uploadFile", file); // Register the file with react-hook-form
+        }
+      };
+
+    const priority = watch("priority");
+    const consultant = watch("consultant");
+  
+
     
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isOpen, setIsOpen] = useState(true);
@@ -73,6 +163,9 @@ const FindAConsultant = () => {
     const toggleOverlay = () => {
         setIsOverlayVisible(!isOverlayVisible);
     };
+
+
+    const [isJobOrderOverlayVisible, setIsJobOrderOverlayVisible] = useState(false);
 
 
     const [loading, setLoading] = useState(false);
@@ -658,7 +751,7 @@ const FindAConsultant = () => {
                                         <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                     </div>
 
-                                    <div className="flex items-center gap-[10px]">
+                                    <div className="flex flex-col items-start gap-[10px]">
                                         <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
                                         <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
                                     </div>
@@ -667,9 +760,9 @@ const FindAConsultant = () => {
                                     <div className="pt-[25px]">
                                     <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
                                         <DrawerTrigger asChild>
-                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] w-[294px] p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-white transition-all">
-                                            Send Job Order
-                                        </button>
+                                            <button className="text-[16.5px] leading-[19.8px]  font-bold text-[#5B52B6] bg-[#CFCDEC] max-w-[294px] w-full p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-white transition-all">
+                                                Send Job Order
+                                            </button>
                                         </DrawerTrigger>
                                         <DrawerContent className="h-[85vh]">
                                             <div className="flex items-start gap-20">
@@ -685,9 +778,256 @@ const FindAConsultant = () => {
                                                             </div>
                                                         </div>
                                                         <div className="flex items-center gap-8">
-                                                            <button className="text-white bg-[#5B52B6] w-[294px] rounded-[8px] p-[10px] text-[16.5px] leading-[19.8px] font-bold">
-                                                                Send Job Order
-                                                            </button>
+                                                            <Sheet>
+    
+                                                                <SheetTrigger asChild>
+                                                                    <button className="bg-[#5B52B6] flex items-center gap-[10px] rounded-[8px] p-[10px] max-w-[190px] w-full">
+                                                                        <h1 className="text-white text-[16.5px] leading-[19.8px] font-bold flex items-center justify-center">Send Job Order</h1>
+                                                                    </button>
+                                                                </SheetTrigger>
+
+
+                                                                <SheetContent
+                                                                    side="right"
+                                                                    className="flex flex-col overflow-y-auto items-start p-6 bg-white space-y-4 w-full max-w-md shadow-lg"
+                                                                >
+
+                                                                    <div>
+                                                                        <h2 className="text-xl font-bold">Job Order Form</h2>
+                                                                        <p className="text-gray-500 pt-[5px]">Kindly fill out the fields provided below</p>
+                                                                    </div>
+
+
+                                                                    <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4">
+
+                                                                        <div>
+                                                                            <Label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Consultancy Type</Label>
+                                                                            <div className='pt-[10px]'>
+                                                                                <Select onValueChange={(value: string) => setValue("consultancyType", value)}>
+                                                                                    <SelectTrigger className="w-full focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
+                                                                                        <span>{watch("consultancyType") || "Select consultancy type"}</span>
+                                                                                    </SelectTrigger>
+                                                                                    <SelectContent>
+                                                                                        <SelectItem value="type1">Type 1</SelectItem>
+                                                                                        <SelectItem value="type2">Type 2</SelectItem>
+                                                                                    </SelectContent>
+                                                                                </Select>
+                                                                            </div>
+                                                                            {errors.consultancyType && <p className="text-red-500">{errors.consultancyType.message}</p>}
+                                                                        </div>
+
+
+                                                                        <div>
+                                                                            <Label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Service Type</Label>
+                                                                            <div className='pt-[10px]'>
+                                                                                <Select onValueChange={(value: string) => setValue("serviceType", value)}>
+                                                                                    <SelectTrigger className="w-full focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
+                                                                                        <span>{watch("serviceType") || "Select service type"}</span>
+                                                                                    </SelectTrigger>
+                                                                                    <SelectContent>
+                                                                                        <SelectItem value="service1">Service 1</SelectItem>
+                                                                                        <SelectItem value="service2">Service 2</SelectItem>
+                                                                                    </SelectContent>
+                                                                                </Select>
+                                                                            </div>
+                                                                            {errors.serviceType && <p className="text-red-500">{errors.serviceType.message}</p>}
+                                                                        </div>
+
+
+                                                                        <div>
+                                                                            <Label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Tags</Label>
+                                                                            <div className='pt-[10px]'><Input {...register("tags")} type="text" placeholder="Enter tags" className="w-full focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none" /></div>
+                                                                        </div>
+
+
+                                                                        <div>
+                                                                            <Label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Priority</Label>
+                                                                            <div className='pt-[10px]'>
+                                                                                <Select
+                                                                                    onValueChange={(value: string) => setValue("priority", value)}
+                                                                                    defaultValue={""} 
+                                                                                    >
+                                                                                    <SelectTrigger className="w-full focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
+                                                                                        <span>{priority || "Select priority"}</span> 
+                                                                                    </SelectTrigger>
+                                                                                    <SelectContent>
+                                                                                        <SelectItem value="low">Low</SelectItem>
+                                                                                        <SelectItem value="medium">Medium</SelectItem>
+                                                                                        <SelectItem value="high">High</SelectItem>
+                                                                                    </SelectContent>
+                                                                                </Select>
+                                                                            </div>
+                                                                            {errors.priority && <p className="text-red-500">{errors.priority.message}</p>}
+                                                                        </div>
+
+                                                                
+                                                                        <div>
+                                                                            <Label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Choose a Consultant</Label>
+                                                                            <div className='pt-[10px]'>
+                                                                                <Select
+                                                                                    onValueChange={(value: string) => setValue("consultant", value)} 
+                                                                                    defaultValue={""} 
+                                                                                    >
+                                                                                    <SelectTrigger className="w-full focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
+                                                                                        <span>{consultant || "Select a consultant"}</span> 
+                                                                                    </SelectTrigger>
+                                                                                    <SelectContent>
+                                                                                        <SelectItem value="consultant1">Consultant 1</SelectItem>
+                                                                                        <SelectItem value="consultant2">Consultant 2</SelectItem>
+                                                                                    </SelectContent>
+                                                                                </Select>
+                                                                            </div>
+                                                                            {errors.consultant && <p className="text-red-500">{errors.consultant.message}</p>}
+                                                                        </div>
+
+
+                                                                        <div className="flex space-x-4">
+                                                                            <div className="flex-1">
+                                                                                <Label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Budget</Label>
+                                                                                <div  className='pt-[10px]'><Input {...register("budget", { valueAsNumber: true })} type="number" placeholder="Enter budget" className="w-full focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none" /></div>
+                                                                                {errors.budget && <p className="text-red-500">{errors.budget.message}</p>}
+                                                                            </div>
+
+                                                                            <div className="flex-1">
+                                                                                <Label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Deadline</Label>
+                                                                                <div className='pt-[10px]'><Input {...register("deadline")} type="date" className="w-full focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none" /></div>
+                                                                                {errors.deadline && <p className="text-red-500">{errors.deadline.message}</p>}
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div className='pb-[10px]'>
+                                                                            <Label className="text-[14px] text-[#101828] leading-[24px] font-medium">Project Description</Label>
+                                                                            <div className='pt-[10px]'>
+                                                                                <Textarea {...register("projectDescription")} placeholder="Describe the project" className="w-full focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none" rows={4} />
+                                                                                {errors.projectDescription && <p className="text-red-500">{errors.projectDescription.message}</p>}
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <Label className="text-[14px] text-[#101828] leading-[24px] font-medium">File Upload</Label>
+                                                                        <div className="border-dashed h-[96px] border-[1px] border-[#5B52B6] rounded-[8px] bg-[#F1F1F1] p-4 text-center relative">
+                                                                            <Input
+                                                                            {...register("uploadFile", { required: "Photo is required" })}
+                                                                            type="file"
+                                                                            accept="image/*"
+                                                                            className="absolute inset-0 opacity-0 cursor-pointer"
+                                                                            onChange={handleFileChange}
+                                                                            />
+                                                                            <Image src={UploadIcon} alt="Upload Icon" width={24} height={24} className="mx-auto" />
+                                                                            <p className="text-[14px] leading-[21px] text-[#D0D0D3] font-normal pt-[5px]">
+                                                                            Drag and Drop photo here or choose photo
+                                                                            </p>
+
+                                                                            {fileName && (
+                                                                            <p className="absolute top-2 right-2 text-[12px] text-[#000000] font-medium">
+                                                                                {fileName}
+                                                                            </p>
+                                                                            )}
+                                                                        </div>
+
+                                                                        <div className="flex items-start justify-between mt-2">
+                                                                            <p className="text-[13px] leading-[19.5px] text-[#757678] font-normal">
+                                                                            Supported formats: JPEG and PNG. 
+                                                                            </p>
+                                                                            <p className="text-[13px] whitespace-nowrap leading-[19.5px] text-[#757678] font-normal">
+                                                                            Maximum size: 25MB
+                                                                            </p>
+                                                                        </div>
+
+
+                                                                        
+                                                                        <div className="flex items-center justify-between w-full pt-4">
+                                                                            <p className="text-[#5B52B6] font-bold">Need help?</p>
+                                                                            <Button type="submit" className="bg-[#5B52B6] text-white">Submit Job Order</Button>
+                                                                        </div>
+                                                                    </form>
+                                                                </SheetContent>
+
+                                                                {isSecondSheetOpen && (
+
+                                                                    <SheetContent side="right" className="flex flex-col p-6 bg-white w-full max-w-md shadow-lg overflow-y-auto scrollbar-hide">
+                                                                        <div className="space-y-[10px]">
+                                                                            <h1 className="text-[#101828] text-[20px] leading-[30px] font-bold">Job Order Summary!</h1>
+                                                                            <p className="text-[#41404B] text-[16px] leading-[22.4px] font-normal max-w-[372px]">Here is the summary page showing the chosen Consultants and the project details.</p>
+                                                                        </div>
+
+
+                                                                        <div className="flex flex-col items-start justify-start gap-y-[20px]">
+                                                                            <h1 className="text-[#101828] text-[20px] leading-[30px] font-bold">Project Assigned to:</h1>
+                                                                            <Image src={AssignedToIcon} alt="AssignedToIcon" />
+                                                                        </div>
+
+                                                                        <div className="flex flex-col items-start justify-start gap-y-[20px]">
+                                                                            <h1 className="text-[#101828] text-[20px] leading-[30px] font-bold">Project Description</h1>
+
+                                                                            <p className="text-[#41404B] text-[16px] leading-[24px] font-normal">
+                                                                                Lorem ipsum dolor sit amet consectetur. Varius blandit ornare erat imperdiet felis turpis morbi. 
+                                                                                Maecenas diam malesuada hac enim. Porttitor magna odio tincidunt viverra. In commodo nisi 
+                                                                                neque in. Eget tristique ornare viverra convallis venenatis est fames. Porttitor cum lacinia 
+                                                                                quis est ut. Nam ante fames faucibus congue phasellus nisl lorem facilisis suscipit.
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div>
+                                                                            <div className="flex items-center gap-[10px]">
+                                                                                <h1 className="text-[#757678] text-[20px] leading-[30px] font-normal">ATTACHMENTS</h1>
+                                                                                <h1 className="text-[#5B52B6] text-[20px] leading-[30px] font-medium">Upload</h1>
+                                                                            </div>
+                                                                            <div className="flex items-center gap-[10px]">
+                                                                                <div className="cursor-pointer">
+                                                                                    <Image src={GuidelinesPdf} alt="GuidelinesPdf" />
+                                                                                </div>
+                                                                                <div className="cursor-pointer">
+                                                                                    <Image src={BrandingAssets} alt="BrandingAssets" />
+                                                                                </div>
+                                                                                <div className="cursor-pointer">
+                                                                                    <Image src={Plus} alt="Plus" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div>
+                                                                            <div className="flex justify-center">
+                                                                                <button className="bg-[#5B52B6] rounded-[8px] w-[172px] p-[10px] text-[16.5px] text-white leading-[19.8px] font-bold"
+                                                                                    onClick={() => setIsOverlayVisible(true)}
+                                                                                >
+                                                                                    Submit
+                                                                                </button>
+                                                                            </div>
+
+                                                                            {isOverlayVisible && (
+                                                                                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                                                                    <div className="bg-white rounded-lg w-[90%] max-w-[341px] min-h-[415px] p-6 relative">
+                                                                                        <button
+                                                                                            className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+                                                                                            onClick={() => setIsOverlayVisible(false)} 
+                                                                                        >
+                                                                                            <Image src={CrossX} alt="CrossX" />
+                                                                                        </button>
+
+                                                                                        <div className="flex flex-col items-center justify-center">
+                                                                                            <Image src={Done} alt="Done" />
+                                                                                        </div>
+
+                                                                                        <div  className="flex flex-col items-center justify-center">
+                                                                                            <h1 className="text-[#101828] text-[25px] leading-[37.5px] font-bold text-center max-w-[270px]">Job Order Submitted Successfully!</h1>
+                                                                                            <p className="text-[#41404B] text-[16px] leading-[24px] font-normal text-center max-w-[270px]">A message thread will be activated and notification sent to you once your offer is accepted</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                        
+                        
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                    </SheetContent>
+
+                                                                )}
+                                                            </Sheet>
+
+
+
+
                                                             <Image width={24} height={24} src={SavedIcon} alt="SavedIcon" />
                                                             <Image width={24} height={24} src={ShareToIcon} alt="ShareToIcon" />
                                                         </div>
@@ -858,14 +1198,14 @@ const FindAConsultant = () => {
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                         </div>
 
-                                        <div className="flex items-center gap-[10px]">
+                                        <div className="flex flex-col items-start gap-[10px]">
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full  whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
                                         </div>
-                                    </div>
+                                    </div> 
 
                                     <div className="pt-[25px]">
-                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] w-[294px] p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
+                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] max-w-[294px] w-full p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
                                             Send Job Order
                                         </button>
                                     </div>
@@ -888,14 +1228,14 @@ const FindAConsultant = () => {
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                         </div>
 
-                                        <div className="flex items-center gap-[10px]">
+                                        <div className="flex flex-col items-start gap-[10px]">
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
                                         </div>
                                     </div>
 
                                     <div className="pt-[25px]">
-                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] w-[294px] p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
+                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] max-w-[294px] w-full p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
                                             Send Job Order
                                         </button>
                                     </div>
@@ -918,14 +1258,14 @@ const FindAConsultant = () => {
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                         </div>
 
-                                        <div className="flex items-center gap-[10px]">
+                                        <div className="flex flex-col items-start gap-[10px]">
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
                                         </div>
                                     </div>
 
                                     <div className="pt-[25px]">
-                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] w-[294px] p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
+                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] max-w-[294px] w-full p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
                                             Send Job Order
                                         </button>
                                     </div>
@@ -948,14 +1288,14 @@ const FindAConsultant = () => {
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                         </div>
 
-                                        <div className="flex items-center gap-[10px]">
+                                        <div className="flex flex-col items-start gap-[10px]">
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
                                         </div>
                                     </div>
 
-                                    <div className="pt-[25px]">
-                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] w-[294px] p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
+                                    <div className="pt-[50px]">
+                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] max-w-[294px] w-full p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
                                             Send Job Order
                                         </button>
                                     </div>
@@ -978,14 +1318,14 @@ const FindAConsultant = () => {
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                         </div>
 
-                                        <div className="flex items-center gap-[10px]">
+                                        <div className="flex flex-col items-start gap-[10px]">
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
                                         </div>
                                     </div>
 
-                                    <div className="pt-[25px]">
-                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] w-[294px] p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
+                                    <div className="pt-[50px]">
+                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] max-w-[294px] w-full p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
                                             Send Job Order
                                         </button>
                                     </div>
@@ -1007,14 +1347,14 @@ const FindAConsultant = () => {
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                         </div>
 
-                                        <div className="flex items-center gap-[10px]">
+                                        <div className="flex flex-col items-start gap-[10px]">
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
                                         </div>
                                     </div>
 
                                     <div className="pt-[25px]">
-                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] w-[294px] p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
+                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] max-w-[294px] w-full p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
                                             Send Job Order
                                         </button>
                                     </div>
@@ -1036,14 +1376,14 @@ const FindAConsultant = () => {
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                         </div>
 
-                                        <div className="flex items-center gap-[10px]">
+                                        <div className="flex flex-col items-start gap-[10px]">
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
                                         </div>
                                     </div>
 
-                                    <div className="pt-[25px]">
-                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] w-[294px] p-[10px] rounded-[8px] hover:bg-[#5B52B6] group hover:text-[white] transition-ease">
+                                    <div className="pt-[55px]">
+                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] max-w-[294px] w-full p-[10px] rounded-[8px] hover:bg-[#5B52B6] group hover:text-[white] transition-ease">
                                             Send Job Order
                                         </button>
                                     </div>
@@ -1065,14 +1405,14 @@ const FindAConsultant = () => {
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                         </div>
 
-                                        <div className="flex items-center gap-[10px]">
+                                        <div className="flex flex-col items-start gap-[10px]">
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
                                         </div>
                                     </div>
 
                                     <div className="pt-[25px]">
-                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] w-[294px] p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
+                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] max-w-[294px] w-full p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
                                             Send Job Order
                                         </button>
                                     </div>
@@ -1094,14 +1434,14 @@ const FindAConsultant = () => {
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                         </div>
 
-                                        <div className="flex items-center gap-[10px]">
+                                        <div className="flex flex-col items-start gap-[10px]">
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full  whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
                                         </div>
                                     </div>
 
                                     <div className="pt-[25px]">
-                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] w-[294px] p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
+                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] max-w-[294px] w-full p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
                                             Send Job Order
                                         </button>
                                     </div>
@@ -1122,14 +1462,14 @@ const FindAConsultant = () => {
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                         </div>
 
-                                        <div className="flex items-center gap-[10px]">
+                                        <div className="flex flex-col items-start gap-[10px]">
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
                                         </div>
                                     </div>
 
-                                    <div className="pt-[25px]">
-                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] w-[294px] p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
+                                    <div className="pt-[55px]">
+                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] max-w-[294px] w-full p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
                                             Send Job Order
                                         </button>
                                     </div>
@@ -1151,14 +1491,14 @@ const FindAConsultant = () => {
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                         </div>
 
-                                        <div className="flex items-center gap-[10px]">
+                                        <div className="flex flex-col items-start gap-[10px]">
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
                                         </div>
                                     </div>
 
                                     <div className="pt-[25px]">
-                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] w-[294px] p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
+                                        <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] max-w-[294px] w-full p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
                                             Send Job Order
                                         </button>
                                     </div>

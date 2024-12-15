@@ -67,7 +67,7 @@ const SideBar = () => {
                    <div className="pt-6">
                        <Link href="/">
                            <div className="max-w-[235px] mx-auto">
-                                <Image   src={DashboardLogo} alt="DashboardLogo" />
+                                <Image  src={DashboardLogo} alt="DashboardLogo" />
                            </div>
                        </Link>
                    </div>

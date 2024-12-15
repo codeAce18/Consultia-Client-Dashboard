@@ -66,48 +66,64 @@ const InvoiceTable: React.FC = () => {
     if (!selectedInvoice) return null;
 
     return (
-      <div className="flex flex-col justify-center items-center">
-        <div className="p-6 bg-white shadow-md max-w-[651px] w-full min-h-[832px]">
-        
-        
-          <div>
-        
-            <div className="flex items-start justify-between">
-              <p className="text-[#101828] text-[20px] leading-[30px] font-bold">{selectedInvoice.invoice}</p>
-              <div>
-                <button
-                  onClick={() => setSelectedInvoice(null)}
-        
-                >
+      <div className="relative flex flex-col justify-center items-center">
+        <div className="p-6 bg-white shadow-md max-w-[651px] w-full min-h-[832px] relative overflow-hidden">
+          {/* Invoice Header */}
+          <div className="flex items-start justify-between">
+            <p className="text-[#101828] text-[20px] leading-[30px] font-bold">
+              {selectedInvoice.invoice}
+            </p>
+            <div>
+              <button onClick={() => setSelectedInvoice(null)}>
                 <Image src={CrossX} alt="CrossX" />
-                </button>
-                <div>
-                  <h1 className="text-[#101828] text-[16px] leading-[24px] font-medium">Dora Consulting Ltd.</h1>
-                  <p className="text-[#757678] text-[14px] leading-[21px] font-normal">Business Strategy & Mgt Consulting</p>
-                  <p className="text-[#757678] text-[14px] leading-[21px] font-normal">Abuja, Nigeria</p>
-                </div>
+              </button>
+              <div>
+                <h1 className="text-[#101828] text-[16px] leading-[24px] font-medium">
+                  Dora Consulting Ltd.
+                </h1>
+                <p className="text-[#757678] text-[14px] leading-[21px] font-normal">
+                  Business Strategy & Mgt Consulting
+                </p>
+                <p className="text-[#757678] text-[14px] leading-[21px] font-normal">
+                  Abuja, Nigeria
+                </p>
               </div>
             </div>
-        
-            <div>
-        
-              <button
-                className="px-4 py-2 rounded"
-                style={{
-                  color: selectedInvoice.status === 'Paid' ? '#008000' :
-                         selectedInvoice.status === 'Unpaid' ? '#FF0000' : '#FF8679',
-                  borderColor: '#A3A2AB',
-                  borderWidth: '1px',
-                  fontWeight: 700,
-                  borderRadius: '8px',
-                }}
-              >
-                {selectedInvoice.status}
-              </button>
+          </div>
+
+          {/* Slanted Status */}
+          <div className="absolute -right-8 -top-[0.5px]">
+            <div
+              className="bg-orange-200 text-orange-500 uppercase font-bold px-14 py-4 transform rotate-45 
+      "
+              style={{
+                color:
+                  selectedInvoice.status === "Paid"
+                    ? "#FFFFFF"
+                    : selectedInvoice.status === "Unpaid"
+                    ? "#FFFFFF"
+                    : "#F87B24",
+                backgroundColor:
+                  selectedInvoice.status === "Paid"
+                    ? "#1ED11E"
+                    : selectedInvoice.status === "Unpaid"
+                    ? "#DD2025"
+                    : "#FAD9C2",
+                borderWidth: "1px",
+                borderStyle: "solid",
+              }}
+            >
+              {selectedInvoice.status}
             </div>
-            <div className="pt-10">
-              <div className="bg-[#F1F1F1] p-[10px]">
-                <p className="text-[#101828] text-[16.5px] leading-[24.5px] font-bold">{selectedInvoice.invoice}</p>
+          </div>
+
+          {/* Invoice Details */}
+          <div className="pt-10">
+            <div className="bg-[#F1F1F1] p-[10px] flex items-center justify-between rounded-[8px] ">
+              <div>
+                <p className="text-[#101828] text-[16.5px] leading-[24.5px] font-bold">
+                  {selectedInvoice.invoice}
+                </p>
                 <div className="flex items-center gap-[10px]">
                   <p className="text-gray-600">Invoice Date</p>
                   <p className="font-semibold">{selectedInvoice.date}</p>
@@ -117,23 +133,28 @@ const InvoiceTable: React.FC = () => {
                   <p className="font-semibold">{selectedInvoice.dueDate}</p>
                 </div>
               </div>
+
+
+              {(selectedInvoice.status === 'Unpaid' || selectedInvoice.status === 'Pending') && (
+                <div>
+                  <button className='bg-[#5B52B6] flex flex-col items-center justify-center text-[#FFFFFF] text-[16px] leading-[24px] h-[32px] p-[10px] rounded-[8px] font-normal max-w-[104px] w-full'>
+                    Pay Now
+                  </button>
+                </div>
+              )}
             </div>
-
-
-            <div className="pt-10">
-              <p>Invoiced To</p>
-
-              <h1>Bankole Onafuwa</h1>
-            </div>
-            {/* <div className="pt-10">
-              <p className="text-gray-600">Total Amount</p>
-              <p className="font-semibold text-lg">{selectedInvoice.total}</p>
-            </div> */}
           </div>
 
-
+          {/* Invoiced To */}
           <div className="pt-10">
-            <div className="flex justify-between items-center bg-[#F1F1F1] p-[10px]">
+            <p className='text-[#757678] text-[14px] leading-[21px] font-medium'>Invoiced To</p>
+
+            <h1 className='text-[#101828] text-[16px] leading-[24px] font-medium pt-[8px]'>Bankole Onafuwa</h1>
+          </div>
+
+          {/* Invoice Items */}
+          <div className="pt-10">
+            <div className="flex justify-between items-center bg-[#F1F1F1] p-[10px] rounded-r-[8px]  rounded-l-[8px]">
               <h1>Description</h1>
               <div className="flex items-center gap-10">
                 <h1>Qty</h1>
@@ -141,40 +162,74 @@ const InvoiceTable: React.FC = () => {
                 <h1>Amount</h1>
               </div>
             </div>
-
-
             <div className="flex items-start justify-between pt-[15px]">
               <div>
-                <h1>Full Market Research</h1>
-                <h1>Business Plan</h1>
+                <h1 className='text-[#757678] text-[14px] leading-[21px] font-medium'>Full Market Research</h1>
+                <h1 className='text-[#757678] text-[14px] leading-[21px] font-medium pt-[20px]'>Business Plan</h1>
               </div>
-
               <div className="flex gap-4 items-center">
                 <div>
-                  <h1>1</h1>
-
-                  <h1>1</h1>
+                  <h1 className='text-[#757678] text-[14px] leading-[21px] font-medium'>1</h1>
+                  <h1 className='text-[#757678] text-[14px] leading-[21px] font-medium  pt-[20px]'>1</h1>
                 </div>
-
                 <div>
-                  <h1>NGN115,000</h1>
-
-                  <h1>NGN115,000</h1>
+                  <h1 className='text-[#757678] text-[14px] leading-[21px] font-medium'>NGN115,000</h1>
+                  <h1 className='text-[#757678] text-[14px] leading-[21px] font-medium  pt-[20px]'>NGN115,000</h1>
                 </div>
-
                 <div>
-                  <h1>NGN115,000</h1>
-
-                  <h1>NGN115,000</h1>
+                  <h1 className='text-[#757678] text-[14px] leading-[21px] font-medium'>NGN115,000</h1>
+                  <h1 className='text-[#757678] text-[14px] leading-[21px] font-medium  pt-[20px]'>NGN115,000</h1>
                 </div>
-
               </div>
-
             </div>
           </div>
-          
+
+
+
+          <div className='pt-10'>
+            <div className='bg-[#F1F1F1] p-2 rounded-[8px] flex flex-col items-end justify-end space-y-[10px]'>
+              <div className='flex items-center gap-10'>
+                <h1 className='text-[#101828] text-[14px] leading-[21px] font-medium'>Sub Total</h1>
+                <p className='text-[#757678] text-[14px] leading-[21px] font-medium '>NGN230,000</p>
+              </div>
+              <div className='flex items-center gap-24'>
+                <h1 className='text-[#101828] text-[14px] leading-[21px] font-medium'>VAT</h1>
+                <p className='text-[#757678] text-[14px] leading-[21px] font-medium '>7.5%</p>
+              </div>
+              <div className='flex items-center gap-10'>
+                <h1 className='text-[#101828] text-[14px] leading-[21px] font-medium'>Total</h1>
+                <p className='text-[#757678] text-[14px] leading-[21px] font-medium '>NGN210,000</p>
+              </div>
+            </div>
+          </div>
+
+          <div className='pt-10'>
+            <h1 className='text-[#101828] text-[16px] leading-[24px] font-medium'>Transactions</h1>
+
+            <div className='pt-[20px]'>
+              <div className='flex items-center bg-[#F1F1F1] justify-between p-[10px] rounded-[8px]'>
+                <h1 className='text-[#101828] text-[16px] leading-[24px] font-medium'>Transaction ID</h1>
+                <h1 className='text-[#101828] text-[16px] leading-[24px] font-medium'>Method</h1>
+                <h1 className='text-[#101828] text-[16px] leading-[24px] font-medium'>Date/Time</h1>
+                <h1 className='text-[#101828] text-[16px] leading-[24px] font-medium'>Amount</h1>
+              </div>
+            </div>
+
+            <h1 className='pt-[10px] text-[#101828] text-center text-[16px] leading-[24px] font-medium'>No Related Transaction Found</h1>
+          </div>
+
+          <div className='pt-[20px]'>
+            <div className='flex items-center bg-[#F1F1F1] rounded-[8px] p-[10px] gap-[34px] justify-end'>
+              <h1 className='text-[#101828] text-[16px] leading-[24px] font-medium'>Wallet Balance</h1>
+
+              <p className='text-[#101828] text-[16px] leading-[24px] font-medium'>NGN00,
+                <span className='text-[11px] leading-[16.5px]'>00</span>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
+
     );
   };
 
