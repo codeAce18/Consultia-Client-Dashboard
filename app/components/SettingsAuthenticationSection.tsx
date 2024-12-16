@@ -87,7 +87,7 @@ const SettingsAuthenticationSection = () => {
     setValue("password", getValues("newPassword"));
     setIsEditingPassword(false);
     setIsPasswordOverlayOpen(false);
-    router.push("/account");
+    router.push("/login");
   };
 
 
