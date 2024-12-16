@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation'; 
 import { useState } from "react";
 import Image from "next/image";
 
@@ -54,6 +55,13 @@ import WalletContent from "./WalletContent";
 
 
 const SideBar = () => {
+
+    const router = useRouter(); 
+
+    const handleLogoutClick = () => {
+      router.push('/login');
+    };
+
 
     const [activeComponent, setActiveComponent] = useState("Dashboard");
 
@@ -294,17 +302,20 @@ const SideBar = () => {
                             </div>
                         </div>
                         <div className="pt-6">
-                            <div className="flex p-4 transition-colors cursor-pointer rounded-[8px] hover:border-l-[6px] hover:border-l-[rgb(207,205,236)] duration-200 max-w-[235px] mx-auto hover:bg-[#5B52B6] group text-[#7B91B0] hover:text-white">
-                                <div className="relative w-8 h-8"> {/* Adjust size as needed */}
+                            <div
+                                className="flex p-4 transition-colors cursor-pointer rounded-[8px] hover:border-l-[6px] hover:border-l-[rgb(207,205,236)] duration-200 max-w-[235px] mx-auto hover:bg-[#5B52B6] group text-[#7B91B0] hover:text-white"
+                                onClick={handleLogoutClick} // Attach the click handler
+                            >
+                                <div className="relative w-8 h-8">
                                 <Image
                                     src={LogOutIcon}
                                     alt="LogOutIcon"
-                                    className="absolute top-0 left-0 transition-opacity duration-200 group-hover:opacity-100" // Keep color visible by default
+                                    className="absolute top-0 left-0 transition-opacity duration-200 group-hover:opacity-0" // Hide default icon on hover
                                 />
                                 <Image
                                     src={LogOutIconWhite}
                                     alt="LogOutIconWhite"
-                                    className="absolute top-0 left-0 transition-opacity duration-200 opacity-0 group-hover:opacity-100" // Show on hover
+                                    className="absolute top-0 left-0 transition-opacity duration-200 opacity-0 group-hover:opacity-100" // Show white icon on hover
                                 />
                                 </div>
                                 <h1 className="ml-2 font-medium">Log Out</h1>

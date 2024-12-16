@@ -6,6 +6,18 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SearchIcon } from 'lucide-react';
+import AssignedToIcon from "../../public/assets/AssignedToIcon.svg"
+
+import BrandingAssets from "../../public/assets/BrandingAssets.svg"
+
+import GuidelinesPdf  from "../../public/assets/GuidelinesPdf.svg"
+
+
+import Plus  from "../../public/assets/Plus.svg"
+
+import  CrossX  from "../../public/assets/CrossX.svg"
+
+import  Done  from "../../public/assets/Done.svg"
 import {
     Sheet,
     SheetContent,
@@ -540,22 +552,85 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
                         </SheetContent>
 
                         {isSecondSheetOpen && (
-                
-                            <SheetContent side="right" className="flex flex-col p-6 bg-white space-y-4 w-full max-w-md shadow-lg">
-                                <h2 className="text-xl font-bold">Review Job Order</h2>
-                                <p className="text-gray-500 pt-[5px]">Please confirm the details below:</p>
 
-                                <div className="space-y-2">
-                                    <p><strong>Consultancy Type:</strong> {formData?.consultancyType}</p>
-                                    
+                            <SheetContent side="right" className="flex flex-col p-6 bg-white w-full max-w-md shadow-lg overflow-y-auto scrollbar-hide">
+                                <div className="space-y-[10px]">
+                                    <h1 className="text-[#101828] text-[20px] leading-[30px] font-bold">Job Order Summary!</h1>
+                                    <p className="text-[#41404B] text-[16px] leading-[22.4px] font-normal max-w-[372px]">Here is the summary page showing the chosen Consultants and the project details.</p>
                                 </div>
 
-                                <div className="flex justify-end">
-                                    <button className="bg-[#5B52B6] text-white py-2 px-4 rounded-md" onClick={() => setIsSecondSheetOpen(false)}>Confirm</button>
+
+                                <div className="flex flex-col items-start justify-start gap-y-[20px]">
+                                    <h1 className="text-[#101828] text-[20px] leading-[30px] font-bold">Project Assigned to:</h1>
+                                    <Image src={AssignedToIcon} alt="AssignedToIcon" />
+                                </div>
+
+                                <div className="flex flex-col items-start justify-start gap-y-[20px]">
+                                    <h1 className="text-[#101828] text-[20px] leading-[30px] font-bold">Project Description</h1>
+
+                                    <p className="text-[#41404B] text-[16px] leading-[24px] font-normal">
+                                        Lorem ipsum dolor sit amet consectetur. Varius blandit ornare erat imperdiet felis turpis morbi. 
+                                        Maecenas diam malesuada hac enim. Porttitor magna odio tincidunt viverra. In commodo nisi 
+                                        neque in. Eget tristique ornare viverra convallis venenatis est fames. Porttitor cum lacinia 
+                                        quis est ut. Nam ante fames faucibus congue phasellus nisl lorem facilisis suscipit.
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <div className="flex items-center gap-[10px]">
+                                        <h1 className="text-[#757678] text-[20px] leading-[30px] font-normal">ATTACHMENTS</h1>
+                                        <h1 className="text-[#5B52B6] text-[20px] leading-[30px] font-medium">Upload</h1>
+                                    </div>
+                                    <div className="flex items-center gap-[10px]">
+                                        <div className="cursor-pointer">
+                                            <Image src={GuidelinesPdf} alt="GuidelinesPdf" />
+                                        </div>
+                                        <div className="cursor-pointer">
+                                            <Image src={BrandingAssets} alt="BrandingAssets" />
+                                        </div>
+                                        <div className="cursor-pointer">
+                                            <Image src={Plus} alt="Plus" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div className="flex justify-center">
+                                        <button className="bg-[#5B52B6] rounded-[8px] w-[172px] p-[10px] text-[16.5px] text-white leading-[19.8px] font-bold"
+                                            onClick={() => setIsOverlayVisible(true)}
+                                        >
+                                            Submit
+                                        </button>
+                                    </div>
+
+                                    {isOverlayVisible && (
+                                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                            <div className="bg-white rounded-lg w-[90%] max-w-[341px] min-h-[415px] p-6 relative">
+                                                <button
+                                                    className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+                                                    onClick={() => setIsOverlayVisible(false)} 
+                                                >
+                                                    <Image src={CrossX} alt="CrossX" />
+                                                </button>
+
+                                                <div className="flex flex-col items-center justify-center">
+                                                    <Image src={Done} alt="Done" />
+                                                </div>
+
+                                                <div  className="flex flex-col items-center justify-center">
+                                                    <h1 className="text-[#101828] text-[25px] leading-[37.5px] font-bold text-center max-w-[270px]">Job Order Submitted Successfully!</h1>
+                                                    <p className="text-[#41404B] text-[16px] leading-[24px] font-normal text-center max-w-[270px]">A message thread will be activated and notification sent to you once your offer is accepted</p>
+                                                </div>
+                                            </div>
+                                                
+
+                                        </div>
+                                    )}
                                 </div>
                             </SheetContent>
-                   
-                        )}
+
+                            )}
+
                     </Sheet>
                 </div>
             </div>

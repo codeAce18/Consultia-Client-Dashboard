@@ -49,8 +49,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     const [loadingStates, setLoadingStates] = useState(true);
     const [loadingCities, setLoadingCities] = useState(false);
 
-    const [fileName, setFileName] = useState<string | null>(null); // Store file name
-    const [error, setError] = useState<string | null>(null); // Store validation error
+    const [fileName, setFileName] = useState<string | null>(null); 
+    const [error, setError] = useState<string | null>(null); 
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -271,7 +271,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
         {/* Upload Profile Picture */}
         <div className="text-left">
-            <label className="text-[16px] text-[#101828] laeding-[24px] font-medium">Upload Profile    Photo</label>
+            <label className="text-[16px] text-[#101828] leading-[24px] font-medium">Upload Profile    Photo</label>
             <div className='pt-[5px]'>
             <div className="border-dashed w-[696px] h-[96px] border-[1px] border-[#5B52B6] rounded-[8px] bg-[#F1F1F1] p-4 text-center relative">
             <input
