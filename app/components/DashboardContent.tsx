@@ -182,6 +182,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [error, setError] = useState<string | null>(null);
     const [isSecondSheetOpen, setIsSecondSheetOpen] = useState(false);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [formData, setFormData] = useState<JobOrderFormData | null>(null);
 
     const { register, handleSubmit, setValue, watch , formState: { errors } } = useForm<JobOrderFormData>({
