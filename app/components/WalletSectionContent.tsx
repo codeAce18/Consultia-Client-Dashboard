@@ -191,7 +191,7 @@ const WalletSectionContent: React.FC<TransactionsSectionContentProps> = ({transa
 
             <div className="pt-10">
                 <div className="flex flex-wrap items-start lg:gap-32 gap-16">
-                    <div className="flex  flex-col lg:flex-row md:flex-row items-center justify-center rounded-[10.58px] shadow-custom-lg gap-16 bg-[#FFFFFF] p-[30px] max-w-[565px] w-full">
+                    <div className="flex  flex-col lg:flex-row md:flex-row lg:items-center lg:justify-center items-start justify-start rounded-[10.58px] shadow-custom-lg gap-16 bg-[#FFFFFF] p-[30px] max-w-[565px] w-full">
                         <div className="space-y-[20px]">
                             <div>
                                 <h1 className="text-[#101828] text-[20px] leading-[30px] font-semibold">6500413410</h1>

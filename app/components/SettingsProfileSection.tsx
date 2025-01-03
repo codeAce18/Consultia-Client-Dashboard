@@ -149,7 +149,7 @@ const SettingsProfileSection = () => {
             </div>
           </div>
 
-          <div className="bg-[#FFFFFF] p-8 rounded-lg shadow-sm w-full max-w-3xl lg:ml-8">
+          <div className="bg-[#FFFFFF]  mt-[25px] lg:mt-0 p-8 rounded-lg shadow-sm w-full max-w-3xl lg:ml-8">
             <div className="flex items-center justify-between">
               <h1 className="text-[#101828] text-[20px] leading-[30px] font-medium">User Profile</h1>
 

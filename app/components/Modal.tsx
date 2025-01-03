@@ -131,199 +131,162 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     };
 
 
-    return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white w-[758px] h-[700px]  rounded-lg p-6 text-center transform transition-all duration-500 ease-in-out translate-y-[-100%] animate-slide-in">
-        <h1 className='text-left text-[#101828] text-[20px] leading-[30px] font-bold'>Welcome Bankole!</h1>
-        <p className='text-left max-w-[589px] text-[#41404B] text-[16px] leading-[24px] font-normal'>Upgrade your profile to get the best out of Consultia! If your are a Nigerian, your wallet can only be activated if you provide your BVN as required by the CBN.</p>
-        <button
-          onClick={onClose}
-          className="absolute top-[34px] right-10 z-50"
-        >
-          <Image src={CrossX} alt="CrossX" />
-        </button>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pt-10">
-        {/* Gender */}
-        <div className='flex items-center justify-center space-x-6'>
-            <div className='w-[339px] text-left'>
-                <label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Gender</label>
-                <div className="pt-[5px]">
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4 overflow-y-auto scrollbar-hide">
+        <div className="lg:mt-40 mt-0 bg-white w-full max-w-[758px] h-[90vh] md:h-auto md:min-h-[758px] overflow-y-auto rounded-lg relative p-4 md:p-6 text-center animate-slide-in">
+          <div className="flex flex-col gap-4">
+            <h1 className='text-left text-[#101828] text-lg md:text-[20px] leading-[30px] font-bold'>Welcome Bankole!</h1>
+            <p className='text-left text-[#41404B] text-sm md:text-[16px] leading-[24px] font-normal'>Upgrade your profile to get the best out of Consultia! If your are a Nigerian, your wallet can only be activated if you provide your BVN as required by the CBN.</p>
+            
+            <button onClick={onClose} className="absolute top-4 right-4 md:top-[34px] md:right-10 z-50">
+              <Image src={CrossX} alt="CrossX" />
+            </button>
+  
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+              <div className='flex flex-col md:flex-row gap-4 md:gap-6'>
+                <div className='w-full md:w-[339px] text-left'>
+                  <label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Gender</label>
+                  <div className="mt-1">
                     <Select onValueChange={(value) => setValue('gender', value)}>
-                    <SelectTrigger className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none" >
+                      <SelectTrigger className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
                         <SelectValue placeholder="Select gender" />
-                    </SelectTrigger>
-                    <SelectContent>
+                      </SelectTrigger>
+                      <SelectContent>
                         <SelectItem value="male">Male</SelectItem>
                         <SelectItem value="female">Female</SelectItem>
-                    </SelectContent>
+                      </SelectContent>
                     </Select>
-                    {/* {errors.gender && <p>{(errors.gender.message as string) || 'Gender is required'}</p>} */}
+                  </div>
                 </div>
-            </div>
-
-            {/* Nationality */}
-            <div className='w-[339px] text-left'>
-            <label className="text-[14px] text-[#A9A9AE] laeding-[21px] font-medium">Nationality</label>
-            <div className="pt-[5px]">
-                <Select onValueChange={(value) => setValue('nationality', value)}>
-                <SelectTrigger className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
-                    <SelectValue placeholder="Select nationality" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="nigeria">Nigeria</SelectItem>
-                    <SelectItem value="ghana">Ghana</SelectItem>
-                </SelectContent>
-                </Select>
-                {/* {errors.nationality && <p>{(errors.nationality.message as string) || 'Nationality is required'}</p>} */}
-            </div>
-            </div>
-        </div>
-
-        <div className='flex items-center justify-center space-x-6'>
-            {/* State of Residence */}
-            <div className='w-[339px] text-left'>
-            <label className="text-[14px] text-[#A9A9AE] laeding-[21px] font-medium">State</label>
-            <div className="pt-[5px]">
-                <Select  onValueChange={(value) => { 
-                setValue('state', value); 
-                setReceiverState(value);
-              }}>
-                <SelectTrigger className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
-                    <SelectValue placeholder={loadingStates ? 'Loading...' : 'Select your state of residence'} />
-                </SelectTrigger>
-                <SelectContent>
-                    {states.map((state) => (
-                    <SelectItem key={state} value={state}>
-                        {state} 
-                    </SelectItem>
-                    ))}
-                </SelectContent>
-                </Select>
-                {/* {errors.state && <p>{(errors.state.message as string) || 'State is required'}</p>} */}
-            </div>
-            </div>
-            {/* City of Residence */}
-            <div className='w-[339px] text-left'>
-            <label className="text-[14px] text-[#A9A9AE] laeding-[21px] font-medium">City</label>
-            <div className="pt-[5px]">
-                <Select
-                    onValueChange={(value) => setValue('city', value)}
-                    disabled={loadingCities || !receiverState}
-                >
-                <SelectTrigger className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
-                    <SelectValue placeholder={loadingCities ? 'Loading cities...' : 'Select your city of residence'} />
-                </SelectTrigger>
-                <SelectContent>
-                    {cities.map((city: string) => ( // Specify the type of city here
-                    <SelectItem key={city} value={city}>
-                        {city}
-                    </SelectItem>
-                    ))}
-                </SelectContent>
-                </Select>
-                {/* {errors.city && <p>{(errors.city.message as string) || 'City is required'}</p>} */}
-            </div>
-            </div>
-        </div>
-
-        <div className="flex items-center justify-center space-x-6">
-            {/* Date of Birth */}
-            <div className="relative w-[339px] text-left">
-            <label className="text-[14px] text-[#A9A9AE] laeding-[21px] font-medium">Date of Birth</label>
-            <div className="pt-[5px]">
-                <Input type="date" {...register('dob')} className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none" />
-                {/* {errors.dob && <p>{(errors.dob.message as string) || 'Date of Birth is required'}</p>} */}
-            </div>
-            </div>
-            {/* Occupation */}
-            <div className='w-[339px] text-left'>
-            <label className="text-[14px] text-[#A9A9AE] laeding-[21px] font-medium">Occupation</label>
-            <div className="pt-[5px]">
-                <Input {...register('occupation')} placeholder="Enter your occupation" className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none" />
-                {/* {errors.occupation && <p>{(errors.occupation.message as string) || 'Occupation is required'}</p>} */}
-            </div>
-            </div>
-        </div>
-
-        <div className='flex items-center justify-center space-x-6'>
-            {/* NIN */}
-            <div className='w-[339px] text-left'>
-                <div className="flex  items-center gap-[15px]">
-                    <label className="text-[14px] text-[#A9A9AE] laeding-[21px] font-medium">Enter NIN</label>
-
+  
+                <div className='w-full md:w-[339px]  text-left'>
+                  <label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Nationality</label>
+                  <div className="mt-1">
+                    <Select onValueChange={(value) => setValue('nationality', value)}>
+                      <SelectTrigger className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
+                        <SelectValue placeholder="Select nationality" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="nigeria">Nigeria</SelectItem>
+                        <SelectItem value="ghana">Ghana</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+  
+              <div className='flex flex-col md:flex-row gap-4 md:gap-6'>
+                <div className='w-full md:w-[339px]  text-left'>
+                  <label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">State</label>
+                  <div className="mt-1">
+                    <Select onValueChange={(value) => { 
+                      setValue('state', value);
+                      setReceiverState(value);
+                    }}>
+                      <SelectTrigger className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
+                        <SelectValue placeholder={loadingStates ? 'Loading...' : 'Select state'} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {states.map((state) => (
+                          <SelectItem key={state} value={state}>{state}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+  
+                <div className='w-full md:w-[339px]  text-left'>
+                  <label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">City</label>
+                  <div className="mt-1">
+                    <Select onValueChange={(value) => setValue('city', value)} disabled={loadingCities || !receiverState}>
+                      <SelectTrigger className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none">
+                        <SelectValue placeholder={loadingCities ? 'Loading...' : 'Select city'} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {cities.map((city) => (
+                          <SelectItem key={city} value={city}>{city}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+  
+              <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+                <div className='w-full md:w-[339px] text-left'>
+                  <label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Date of Birth</label>
+                  <div className="mt-1">
+                    <Input type="date" {...register('dob')} className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none w-full" />
+                  </div>
+                </div>
+  
+                <div className='w-full md:w-[339px] text-left'>
+                  <label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Occupation</label>
+                  <div className="mt-1">
+                    <Input {...register('occupation')} placeholder="Enter occupation" className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none w-full" />
+                  </div>
+                </div>
+              </div>
+  
+              <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+                <div className='w-full md:w-[339px]'>
+                  <div className="flex items-center gap-2  text-left">
+                    <label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Enter NIN</label>
                     <Image width={24} height={24} src={InfoIcon} alt="InfoIcon" />
+                  </div>
+                  <div className="mt-1">
+                    <Input {...register('nin')} placeholder="Enter NIN" className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none w-full" />
+                  </div>
                 </div>
-            <div className="pt-[5px]">
-                <Input {...register('nin')} placeholder="Enter your NIN" className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none"/>
-                {/* {errors.nin && <p>{(errors.nin.message as string) || 'NIN must be 11 digits'}</p>} */}
-            </div>
-            </div>
-            {/* BVN */}
-            <div className='w-[339px] text-left'>
-            <label className="text-[14px] text-[#A9A9AE] laeding-[21px] font-medium">Enter BVN</label>
-            <div className="pt-[5px]">
-                <Input {...register('bvn')} placeholder="Enter your BVN" className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none"/>
-                {/* {errors.bvn && <p>{(errors.bvn.message as string) || 'BVN must be 11 digits'}</p>} */}
-            </div>
-            </div>
-        </div>
-
-        {/* Upload Profile Picture */}
-        <div className="text-left">
-            <label className="text-[16px] text-[#101828] leading-[24px] font-medium">Upload Profile    Photo</label>
-            <div className='pt-[5px]'>
-            <div className="border-dashed w-[696px] h-[96px] border-[1px] border-[#5B52B6] rounded-[8px] bg-[#F1F1F1] p-4 text-center relative">
-            <input
-                {...register('profilePicture')}
-                type="file"
-                accept="image/*"
-                className="absolute inset-0 opacity-0 cursor-pointer"
-                onChange={handleFileChange} // Handle file input change
-            />
-            <Image src={UploadIcon} alt="Upload Icon" width={24} height={24} className="mx-auto" /> {/* Update with correct path */}
-            <p className="text-[14px] leading-[21px] text-[#D0D0D3] font-normal pt-[5px]">Drag and Drop photo here or choose photo</p>
-            
-            {fileName && (
-                <p className="absolute top-2 right-2 text-[12px] text-[#000000] font-medium">
-                {fileName}
-                </p> // Display file name at the top-right corner
-            )}
-            
-            {error && (
-                <p className="text-red-500 mt-2">{error}</p>
-            )}
-
-            {/* {errors.profilePicture && <p>{(errors.profilePicture.message as string) || 'Profile picture is required'}</p>} */}
-            </div>
-            <div className="flex items-center justify-between">
-                <p className="text-[13px] leading-[19.5px] text-[#757678] font-normal">Supported formats: JPEG and PNG. Dimension: 500 by 500px</p>
-
-                <p className="text-[13px] leading-[19.5px] text-[#757678] font-normal">Maximum size: 25MB</p>
-            </div>
-            </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className='flex items-center justify-center space-x-4'>
-            {/* Cancel Button */}
-            <Button variant="outline" onClick={onClose} className="w-[326px] h-[48px] rounded-[8px] bg-[#F1F1F1] text-[16.5px] leading-[19.8px] text-[#101828] font-bold">
-                Cancel
-            </Button>
-
-            {/* Upgrade Profile Button */}
-            <Button onClick={onClose}  className="w-[326px] bg-[#5B52B6] h-[48px] rounded-[8px] text-white text-[16.5px] leading-[19.8px] font-bold">
-                Upgrade Profile
-            </Button>
-        </div>
-        </form>
-
-        {/* <ModalForm /> */}
-
-        <div className="absolute top-0 right-0">
+  
+                <div className='w-full md:w-[339px]  text-left'>
+                  <label className="text-[14px] text-[#A9A9AE] leading-[21px] font-medium">Enter BVN</label>
+                  <div className="mt-1">
+                    <Input {...register('bvn')} placeholder="Enter BVN" className="focus:outline-none focus:ring-0 bg-[#F1F1F1] border-none w-full" />
+                  </div>
+                </div>
+              </div>
+  
+              <div className="w-full  text-left">
+                <label className="text-[16px] text-[#101828] leading-[24px] font-medium">Upload Profile Photo</label>
+                <div className="mt-2">
+                  <div className="border-dashed border-[1px] border-[#5B52B6] rounded-[8px] bg-[#F1F1F1] p-4 text-center relative">
+                    <input
+                      {...register('profilePicture')}
+                      type="file"
+                      accept="image/*"
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                      onChange={handleFileChange}
+                    />
+                    <Image src={UploadIcon} alt="Upload Icon" width={24} height={24} className="mx-auto" />
+                    <p className="text-[14px] leading-[21px] text-[#D0D0D3] font-normal mt-2">Drag and Drop photo here or choose photo</p>
+                    {fileName && (
+                      <p className="absolute top-2 right-2 text-[12px] text-black font-medium">{fileName}</p>
+                    )}
+                    {error && <p className="text-red-500 mt-2">{error}</p>}
+                  </div>
+                  <div className="flex flex-col md:flex-row justify-between gap-2 mt-2 text-[13px] text-[#757678]">
+                    <p>Supported formats: JPEG and PNG. Dimension: 500 by 500px</p>
+                    <p>Maximum size: 25MB</p>
+                  </div>
+                </div>
+              </div>
+  
+              <div className='flex flex-col md:flex-row gap-4 mt-4'>
+                <Button onClick={onClose} className="w-full md:w-[326px] h-[48px] rounded-[8px] bg-[#F1F1F1] text-[16.5px] text-[#101828] font-bold">
+                  Cancel
+                </Button>
+                <Button onClick={onClose} className="w-full md:w-[326px] h-[48px] rounded-[8px] bg-[#5B52B6] text-white text-[16.5px] font-bold">
+                  Upgrade Profile
+                </Button>
+              </div>
+            </form>
+          </div>
+  
+          <div className="absolute top-0 right-0 hidden md:block">
             <Image src={ModalSvg} alt="ModalSvg" />
+          </div>
         </div>
-      </div>
     </div>
   );
 };

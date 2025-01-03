@@ -46,6 +46,8 @@ import  CrossX  from "../public/assets/CrossX.svg"
 
 import  Done  from "../public/assets/Done.svg"
 
+import { Menu, X } from 'lucide-react';
+
 
 import { useState } from 'react'
 
@@ -88,11 +90,145 @@ const jobOrderSchema = z.object({
 
 
 
-interface FindAConsultantProps {
-    setActiveComponent: (component: string) => void;
+  interface FindAConsultantProps {
+    setActiveComponent: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const FindAConsultant = ({ setActiveComponent }: FindAConsultantProps) => {
+interface SidebarProps {
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
+    const [experienceOpen, setExperienceOpen] = useState(true);
+    const [budgetOpen, setBudgetOpen] = useState(true);
+    const [ratingOpen, setRatingOpen] = useState(true);
+  
+    return (
+      <>
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-white shadow-md"
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} className="text-[#5B52B6]" />}
+        </button>
+  
+        {/* Overlay for mobile */}
+        {isOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+  
+        {/* Sidebar */}
+        <aside
+          className={`fixed top-0 left-0 h-full w-[290px] bg-white border-r-2 z-40 transform transition-transform duration-300 ease-in-out ${
+            isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+          }`}
+        >
+          <div className="h-full overflow-y-auto scrollbar-hide">
+            {/* Logo */}
+            <Link href="/" className="block pt-6 pl-9">
+              <Image src={DashboardLogo} alt="Dashboard Logo" width={120} height={40} />
+            </Link>
+  
+            {/* Filter Section */}
+            <div className="px-9 pt-5">
+              <div className="flex items-center justify-between">
+                <h1 className="text-gray-900 text-xl font-medium">Filter</h1>
+                <button className="text-[#5B52B6] text-sm hover:underline">
+                  Clear All
+                </button>
+              </div>
+  
+              {/* Experience Section */}
+              <div className="mt-8">
+                <button
+                  className="w-full flex items-center justify-between"
+                  onClick={() => setExperienceOpen(!experienceOpen)}
+                >
+                  <h2 className="text-xl text-gray-900 font-medium">Experience</h2>
+                  <div className={`transform transition-transform duration-300 ${experienceOpen ? 'rotate-0' : 'rotate-90'}`}>
+                    <Image width={24} height={24} src={ArrowUpSvg} alt="Toggle" />
+                  </div>
+                </button>
+  
+                {experienceOpen && (
+                  <div className="mt-2 space-y-2">
+                    {['Less than a year', '1-3 years', '3-5 years', '5 years & above'].map((option) => (
+                      <label key={option} className="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" className="w-4 h-4 text-[#5B52B6] border-[#5B52B6] rounded" />
+                        <span className="text-gray-900">{option}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
+  
+              {/* Budget Section */}
+              <div className="mt-8">
+                <button
+                  className="w-full flex items-center justify-between"
+                  onClick={() => setBudgetOpen(!budgetOpen)}
+                >
+                  <h2 className="text-xl text-gray-900 font-medium">Budget</h2>
+                  <div className={`transform transition-transform duration-300 ${budgetOpen ? 'rotate-0' : 'rotate-90'}`}>
+                    <Image width={24} height={24} src={ArrowUpSvg} alt="Toggle" />
+                  </div>
+                </button>
+  
+                {budgetOpen && (
+                  <div className="mt-2 space-y-2">
+                    {['Less than ₦500K', '₦500K - ₦5M', 'More than ₦5M', 'Any Amount'].map((option) => (
+                      <label key={option} className="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" className="w-4 h-4 text-[#5B52B6] border-[#5B52B6] rounded" />
+                        <span className="text-gray-900">{option}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
+  
+              {/* Rating Section */}
+              <div className="mt-8 pb-8">
+                <button
+                  className="w-full flex items-center justify-between"
+                  onClick={() => setRatingOpen(!ratingOpen)}
+                >
+                  <h2 className="text-xl text-gray-900 font-medium">Rating</h2>
+                  <div className={`transform transition-transform duration-300 ${ratingOpen ? 'rotate-0' : 'rotate-90'}`}>
+                    <Image width={24} height={24} src={ArrowUpSvg} alt="Toggle" />
+                  </div>
+                </button>
+  
+                {ratingOpen && (
+                  <div className="mt-2 space-y-2">
+                    {[5, 4, 3, 2, 1].map((rating) => (
+                      <label key={rating} className="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" className="w-4 h-4 text-[#5B52B6] border-[#5B52B6] rounded" />
+                        <div className="flex">
+                          {[...Array(rating)].map((_, i) => (
+                            <Image key={i} width={16} height={16} src={Star} alt="Star" />
+                          ))}
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </aside>
+      </>
+    );
+  };
+
+
+
+const FindAConsultant: React.FC<FindAConsultantProps> = ({ setActiveComponent}) => {
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [fileName, setFileName] = useState<string | null>(null);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [error, setError] = useState<string | null>(null);
@@ -143,15 +279,17 @@ const FindAConsultant = ({ setActiveComponent }: FindAConsultantProps) => {
 
     
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const [isOpen, setIsOpen] = useState(true);
+    // const [isOpen, setIsOpen] = useState(true);
 
-    const toggleDropdown = () => setIsOpen(!isOpen);
+    // const toggleDropdown = () => setIsOpen(!isOpen);
 
-    const [budgetOpen, setBudgetOpen] = useState(true);
-    const toggleBudgetDropdown = () => setBudgetOpen(!budgetOpen);
+    // const [budgetOpen, setBudgetOpen] = useState(true);
 
-    const [ratingOpen, setRatingOpen] = useState(true);
-    const toggleRatingDropdown = () => setRatingOpen(!ratingOpen);
+    // const toggleBudgetDropdown = () => setBudgetOpen(!budgetOpen);
+
+    // const [ratingOpen, setRatingOpen] = useState(true);
+
+    // const toggleRatingDropdown = () => setRatingOpen(!ratingOpen);
 
 
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
@@ -191,246 +329,14 @@ const FindAConsultant = ({ setActiveComponent }: FindAConsultantProps) => {
             <div className="flex">
 
                 {/* SIDE BAR FOR FIND A CONSULTANT */}
-                <div className="fixed w-[290px] h-screen border-r-[2px] ">
-                    <div className="h-full overflow-y-auto scrollbar-hide">
-    
-                        <Link href="/">
-                            <div className="pt-[22px] pl-[36px]">
-                                <Image src={DashboardLogo} alt="DashboardLogo" />
-                            </div>
-                        </Link>
-
-
-                        <div className="pt-[20px]">
-                            <div className="flex items-center justify-between mx-auto max-w-[236px]">
-                                <h1 className="text-[#101828] leading-[30px] font-medium text-[20px]">
-                                    Filter
-                                </h1>
-                                <p className="text-[#5B52B6] text-[16px] leading-[22.4px] font-normal">
-                                    Clear All
-                                </p>
-                            </div>
-
-
-                            <div className="pt-10">
-                                <div 
-                                    className="flex items-center justify-between max-w-[236px] mx-auto cursor-pointer" 
-                                    onClick={toggleDropdown}
-                                >
-                                    <h1 className="text-[20px] leading-[30px] text-[#101828] font-medium">Experience</h1>
-                                    <Image 
-                                        width={24} 
-                                        height={24} 
-                                        src={ArrowUpSvg} 
-                                        alt="Arrow Icon"
-                                        className={`transition-transform duration-300 ${isOpen ? 'rotate-0' : 'rotate-90'}`} 
-                                    />
-                                </div>
-
-                                {isOpen && (
-                                    <div className="pt-[10px]">
-                                        <div className="flex items-center gap-[8px] max-w-[236px] mx-auto">
-                                            <input 
-                                                type="checkbox" 
-                                                className="w-[18px] h-[18px] text-blue-600 border-[#5B52B6] rounded"
-                                            />
-                                            <h2 className="text-[#101828] text-[16px] leading-[24px] font-normal">Less than a year</h2>
-                                        </div>
-
-                                        <div className="pt-[10px]">
-                                            <div className="flex items-center gap-[8px] max-w-[236px] mx-auto">
-                                                <input
-                                                    type="checkbox"
-                                                    className="w-[18px] h-[18px] text-blue-600 border-gray-300 rounded"
-                                                />
-                                                <h2 className="text-[#101828] text-[16px] leading-[24px] font-normal">1-3 years</h2>
-                                            </div>
-                                        </div>
-
-                                        <div className="pt-[10px]">
-                                            <div className="flex items-center gap-[8px] max-w-[236px] mx-auto">
-                                                <input
-                                                    type="checkbox"
-                                                    className="w-[18px] h-[18px] text-blue-600 border-gray-300 rounded"
-                                                />
-                                                <h2 className="text-[#101828] text-[16px] leading-[24px] font-normal">3-5 years</h2>
-                                            </div>
-                                        </div>
-
-                                        <div className="pt-[10px]">
-                                            <div className="flex items-center gap-[8px] max-w-[236px] mx-auto">
-                                                <input
-                                                    type="checkbox"
-                                                    className="w-[18px] h-[18px] text-blue-600 border-gray-300 rounded"
-                                                />
-                                                <h2 className="text-[#101828] text-[16px] leading-[24px] font-normal">5 years & above</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-
-
-                            <div className="pt-10">
-                                <div 
-                                    className="flex items-center justify-between max-w-[236px] mx-auto cursor-pointer" 
-                                    onClick={toggleBudgetDropdown}
-                                >
-                                    <h1 className="text-[20px] leading-[30px] text-[#101828] font-medium">Budget</h1>
-                                    <Image 
-                                        width={24} 
-                                        height={24} 
-                                        src={ArrowUpSvg} 
-                                        alt="Arrow Icon"
-                                        className={`transition-transform duration-300 ${budgetOpen ? 'rotate-0' : 'rotate-90'}`} 
-                                    />
-                                </div>
-
-                                {budgetOpen && (
-                                    <div className="pt-[10px]">
-                                        <div className="flex items-center gap-[8px] max-w-[236px] mx-auto">
-                                            <input 
-                                                type="checkbox" 
-                                                className="w-[18px] h-[18px] text-blue-600 border-[#5B52B6] rounded"
-                                            />
-                                            <h2 className="text-[#101828] text-[16px] leading-[24px] font-normal">Less than ₦500K</h2>
-                                        </div>
-
-                                        <div className="pt-[10px]">
-                                            <div className="flex items-center gap-[8px] max-w-[236px] mx-auto">
-                                                <input
-                                                    type="checkbox"
-                                                    className="w-[18px] h-[18px] text-blue-600 border-gray-300 rounded"
-                                                />
-                                                <h2 className="text-[#101828] text-[16px] leading-[24px] font-normal">₦500K - ₦5M</h2>
-                                            </div>
-                                        </div>
-
-                                        <div className="pt-[10px]">
-                                            <div className="flex items-center gap-[8px] max-w-[236px] mx-auto">
-                                                <input
-                                                    type="checkbox"
-                                                    className="w-[18px] h-[18px] text-blue-600 border-gray-300 rounded"
-                                                />
-                                                <h2 className="text-[#101828] text-[16px] leading-[24px] font-normal">More than ₦5M</h2>
-                                            </div>
-                                        </div>
-
-                                        <div className="pt-[10px]">
-                                            <div className="flex items-center gap-[8px] max-w-[236px] mx-auto">
-                                                <input
-                                                    type="checkbox"
-                                                    className="w-[18px] h-[18px] text-blue-600 border-gray-300 rounded"
-                                                />
-                                                <h2 className="text-[#101828] text-[16px] leading-[24px] font-normal">Any Amount</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-
-
-                            <div className="pt-10 pb-10">
-                                <div 
-                                    className="flex items-center justify-between max-w-[236px] mx-auto cursor-pointer" 
-                                    onClick={toggleRatingDropdown}
-                                >
-                                    <h1 className="text-[20px] leading-[30px] text-[#101828] font-medium">Rating</h1>
-                                    <Image 
-                                        width={24} 
-                                        height={24} 
-                                        src={ArrowUpSvg} 
-                                        alt="Arrow Icon"
-                                        className={`transition-transform duration-300 ${ratingOpen ? 'rotate-0' : 'rotate-90'}`} 
-                                    />
-                                </div>
-
-                                {ratingOpen && (
-                                    <div className="pt-[10px]">
-                                        <div className="flex items-center gap-[8px] max-w-[236px] mx-auto">
-                                            <input 
-                                                type="checkbox" 
-                                                className="w-[18px] h-[18px] text-blue-600 border-[#5B52B6] rounded"
-                                            />
-                                           <div className="flex items-center">
-                                                <Image width={16} height={16} src={Star} alt="Star" />
-                                                <Image width={16} height={16} src={Star} alt="Star" />
-                                                <Image width={16} height={16} src={Star} alt="Star" />
-                                                <Image width={16} height={16} src={Star} alt="Star" />
-                                                <Image width={16} height={16} src={Star} alt="Star" />
-                                           </div>
-                                        </div>
-
-                                        <div className="pt-[10px]">
-                                            <div className="flex items-center gap-[8px] max-w-[236px] mx-auto">
-                                                <input
-                                                    type="checkbox"
-                                                    className="w-[18px] h-[18px] text-blue-600 border-gray-300 rounded"
-                                                />
-                                                <div className="flex items-center">
-                                                    <Image width={16} height={16} src={Star} alt="Star" />
-                                                    <Image width={16} height={16} src={Star} alt="Star" />
-                                                    <Image width={16} height={16} src={Star} alt="Star" />
-                                                    <Image width={16} height={16} src={Star} alt="Star" />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="pt-[10px]">
-                                            <div className="flex items-center gap-[8px] max-w-[236px] mx-auto">
-                                                <input
-                                                    type="checkbox"
-                                                    className="w-[18px] h-[18px] text-blue-600 border-gray-300 rounded"
-                                                />
-
-                                                <div className="flex items-center">
-                                                    <Image width={16} height={16} src={Star} alt="Star" />
-                                                    <Image width={16} height={16} src={Star} alt="Star" />
-                                                    <Image width={16} height={16} src={Star} alt="Star" />
-                                                </div>
-                                                    
-                                            </div>
-                                        </div>
-
-                                        <div className="pt-[10px]">
-                                            <div className="flex items-center gap-[8px] max-w-[236px] mx-auto">
-                                                <input
-                                                    type="checkbox"
-                                                    className="w-[18px] h-[18px] text-blue-600 border-gray-300 rounded"
-                                                />
-                                                <div className="flex items-center">
-                                                    <Image width={16} height={16} src={Star} alt="Star" />
-                                                    <Image width={16} height={16} src={Star} alt="Star" />
-                                                </div>
-                                                    
-                                            </div>
-                                        </div>
-
-                                        <div className="pt-[10px]">
-                                            <div className="flex items-center gap-[8px] max-w-[236px] mx-auto">
-                                                <input
-                                                    type="checkbox"
-                                                    className="w-[18px] h-[18px] text-blue-600 border-gray-300 rounded"
-                                                />
-
-                                                
-                                                <div className="flex items-center">
-                                                    <Image width={16} height={16} src={Star} alt="Star" />
-                                                </div>
-                                                    
-                                                    
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
+                <div className="min-h-screen bg-gray-50">
+                    <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
                 </div>
 
 
+
                 {/* Main Content */}
-                <div className="bg-[#F9FAFE]  min-h-screen w-full ml-[290px] px-10 py-6">
+                <div className={`bg-[#F9FAFE]  min-h-screen w-full transition-all duration-300 ${sidebarOpen ? 'lg:ml-[290px]' : 'lg:ml-[290px]'}  px-10 py-6`} >
                     <DashboardHeader title="Find Consultants" setActiveComponent={setActiveComponent} />
 
 
@@ -441,50 +347,49 @@ const FindAConsultant = ({ setActiveComponent }: FindAConsultantProps) => {
 
 
                     <div className="pt-[25px]">
-                        <div className="grid grid-cols-4 gap-4">
-                            {/* Consultancy Type */}
-                            <select
-                            value={consultancyType}
-                            onChange={(e) => setConsultancyType(e.target.value)}
-                            className="bg-[#FFFFFF] shadow-custom cursor-pointer max-w-[269px] p-[8px] rounded-[8px] flex items-center text-[#41404B] text-[16px] leading-[24px] font-normal"
-                            >
-                            <option value="" disabled>Select Consultancy Type</option>
-                            <option value="Business">Business</option>
-                            <option value="IT">IT</option>
-                            <option value="Financial">Financial</option>
-                            </select>
-
-                            {/* Service Type */}
-                            <select
-                            value={serviceType}
-                            onChange={(e) => setServiceType(e.target.value)}
-                            className="bg-[#FFFFFF] shadow-custom cursor-pointer max-w-[269px] p-[8px] rounded-[8px] flex items-center text-[#41404B] text-[16px] leading-[24px] font-normal"
-                            >
-                            <option value="" disabled>Select Service Type</option>
-                            <option value="Consultation">Consultation</option>
-                            <option value="Strategy">Strategy</option>
-                            <option value="Implementation">Implementation</option>
-                            </select>
-
-                            {/* Location */}
-                            <select
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                            className="bg-[#FFFFFF] shadow-custom cursor-pointer max-w-[269px] p-[8px] rounded-[8px] flex items-center text-[#41404B] text-[16px] leading-[24px] font-normal"
-                            >
-                            <option value="" disabled>Select Location</option>
-                            <option value="New York">New York</option>
-                            <option value="San Francisco">San Francisco</option>
-                            <option value="Los Angeles">Los Angeles</option>
-                            </select>
-
-                            {/* Search Button */}
-                            <button
-                                onClick={handleSearch}
-                                className="shadow-button-custom text-[16.5px] leading-[19.8px] text-[#FFFFFF] font-bold bg-[#5B52B6] p-[10px] rounded-[8px] w-[236px]"
-                            >
-                                Search
-                            </button>
+                        <div className="flex items-center justify-center lg:items-start lg:justify-between">
+                            <div className="grid lg:grid-cols-4  md:grid-cols-3 sm:grid-cols-2  grid-cols-1  gap-4">
+                                {/* Consultancy Type */}
+                                <select
+                                    value={consultancyType}
+                                    onChange={(e) => setConsultancyType(e.target.value)}
+                                    className="bg-[#FFFFFF] shadow-custom cursor-pointer max-w-[269px] p-[8px] rounded-[8px] flex items-center text-[#41404B] text-[16px] leading-[24px] font-normal"
+                                >
+                                    <option value="" disabled>Select Consultancy Type</option>
+                                    <option value="Business">Business</option>
+                                    <option value="IT">IT</option>
+                                    <option value="Financial">Financial</option>
+                                </select>
+                                {/* Service Type */}
+                                <select
+                                    value={serviceType}
+                                    onChange={(e) => setServiceType(e.target.value)}
+                                    className="bg-[#FFFFFF] shadow-custom cursor-pointer max-w-[269px] p-[8px] rounded-[8px] flex items-center text-[#41404B] text-[16px] leading-[24px] font-normal"
+                                >
+                                    <option value="" disabled>Select Service Type</option>
+                                    <option value="Consultation">Consultation</option>
+                                    <option value="Strategy">Strategy</option>
+                                    <option value="Implementation">Implementation</option>
+                                </select>
+                                {/* Location */}
+                                <select
+                                    value={location}
+                                    onChange={(e) => setLocation(e.target.value)}
+                                    className="bg-[#FFFFFF] shadow-custom cursor-pointer max-w-[269px] p-[8px] rounded-[8px] flex items-center text-[#41404B] text-[16px] leading-[24px] font-normal"
+                                >
+                                    <option value="" disabled>Select Location</option>
+                                    <option value="New York">New York</option>
+                                    <option value="San Francisco">San Francisco</option>
+                                    <option value="Los Angeles">Los Angeles</option>
+                                </select>
+                                {/* Search Button */}
+                                <button
+                                    onClick={handleSearch}
+                                    className="shadow-button-custom text-[16.5px] leading-[19.8px] text-[#FFFFFF] font-bold bg-[#5B52B6] p-[10px] rounded-[8px] w-[236px]"
+                                >
+                                    Search
+                                </button>
+                            </div>
                         </div>
 
                         <div
@@ -510,13 +415,13 @@ const FindAConsultant = ({ setActiveComponent }: FindAConsultantProps) => {
                             <div  className={`py-10   px-10 flex items-center justify-center ${
                                 loading || results ? 'bg-[#FFFFFF]' : ''
                             }`}>
-                            <div className="grid grid-cols-3 gap-10">
+                            <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10">
                                
                                     {loading ? (
                                         // Skeleton Loader for 3 consultant cards (No map, explicit rendering)
                                       
                                             <>
-                                            <div className="bg-white rounded-[8px] py-[15px] px-[12px] shadow-custom">
+                                            <div className="bg-white   rounded-[8px] py-[15px] px-[12px] shadow-custom">
                                                 <div className="flex items-start gap-4">
                                                     <Skeleton className="w-12 h-12 rounded-full" />
                                                     <div>
@@ -663,26 +568,26 @@ const FindAConsultant = ({ setActiveComponent }: FindAConsultantProps) => {
                                  
                                     ) : results ? (
                                 <>
-                                <div className="bg-white rounded-[8px] py-[15px] px-[12px] shadow-custom">
+                                <div className="bg-white  rounded-[8px] py-[15px] px-[12px] shadow-custom">
                                     <div className="flex items-start gap-4">
-                                    <Image src={DoraConsultant} alt="DoraConsultant" />
-                                    <div>
-                                        <h1 className="text-[20px] leading-[30px] font-bold text-[#101828]">Dora Consulting Ltd.</h1>
-                                        <p className="text-[13px] leading-[19.5px] text-[#41404B] font-normal">Digital Marketing & SEO Consulting</p>
-                                        <p className="text-[13px] leading-[19.5px] text-[#41404B] font-normal max-w-[215px]">Lagos, Nigeria - ⭐⭐⭐⭐⭐ (4.9/5 reviews)</p>
-                                    </div>
+                                        <Image src={DoraConsultant} alt="DoraConsultant" />
+                                        <div>
+                                            <h1 className="text-[20px] leading-[30px] font-bold text-[#101828]">Dora Consulting Ltd.</h1>
+                                            <p className="text-[13px] leading-[19.5px] text-[#41404B] font-normal">Digital Marketing & SEO Consulting</p>
+                                            <p className="text-[13px] leading-[19.5px] text-[#41404B] font-normal max-w-[215px]">Lagos, Nigeria - ⭐⭐⭐⭐⭐ (4.9/5 reviews)</p>
+                                        </div>
                                     </div>
 
                                     <div className="pt-[20px] space-y-[10px]">
-                                    <div className="flex items-center gap-[10px]">
-                                        <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[143px] flex items-center justify-center p-[10px] rounded-[100px] w-full">SEO audits</h1>
-                                        <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
-                                    </div>
+                                        <div className="flex flex-wrap items-center gap-[10px]">
+                                            <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[143px] flex items-center justify-center p-[10px] rounded-[100px] w-full">SEO audits</h1>
+                                            <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
+                                        </div>
 
-                                    <div className="flex flex-col items-start gap-[10px]">
-                                        <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
-                                        <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
-                                    </div>
+                                        <div className="flex flex-col items-start gap-[10px]">
+                                            <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[214px] flex items-center justify-center p-[10px] rounded-[100px] w-full whitespace-nowrap">Google Ads & Facebook Ads Mgt</h1>
+                                            <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[61px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">Growth</h1>
+                                        </div>
                                     </div>
 
                                     <div className="pt-[25px]">
@@ -1121,7 +1026,7 @@ const FindAConsultant = ({ setActiveComponent }: FindAConsultantProps) => {
                                     </div>
 
                                     <div className="pt-[20px] space-y-[10px]">
-                                        <div className="flex items-center gap-[10px]">
+                                        <div className="flex flex-wrap items-center gap-[10px]">
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[143px] flex items-center justify-center p-[10px] rounded-[100px] w-full">SEO audits</h1>
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                         </div>
@@ -1132,7 +1037,7 @@ const FindAConsultant = ({ setActiveComponent }: FindAConsultantProps) => {
                                         </div>
                                     </div> 
 
-                                    <div className="pt-[25px]">
+                                    <div className="pt-[45px]">
                                         <button className="text-[16.5px] leading-[19.8px] font-bold text-[#5B52B6] bg-[#CFCDEC] max-w-[294px] w-full p-[10px] rounded-[8px] hover:bg-[#5B52B6] hover:text-[white] transition-ease">
                                             Send Job Order
                                         </button>
@@ -1151,7 +1056,7 @@ const FindAConsultant = ({ setActiveComponent }: FindAConsultantProps) => {
                                     </div>
 
                                     <div className="pt-[20px] space-y-[10px]">
-                                        <div className="flex items-center gap-[10px]">
+                                        <div className="flex flex-wrap items-center gap-[10px]">
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] border-[#F0F0F9] max-w-[143px] flex items-center justify-center p-[10px] rounded-[100px] w-full">SEO audits</h1>
                                             <h1 className="text-[13px] leading-[19.5px] text-[#41404B] font-normal border-[1px] max-w-[143px] flex items-center justify-center p-[10px] whitespace-nowrap rounded-[100px] border-[#F0F0F9] w-full">On-page Optimization</h1>
                                         </div>
