@@ -137,7 +137,7 @@ const InvoiceTable: React.FC = () => {
 
               {(selectedInvoice.status === 'Unpaid' || selectedInvoice.status === 'Pending') && (
                 <div>
-                  <button className='bg-[#5B52B6] flex flex-col items-center justify-center text-[#FFFFFF] text-[16px] leading-[24px] h-[32px] p-[10px] rounded-[8px] font-normal max-w-[104px] w-full'>
+                  <button className='bg-[#5B52B6] whitespace-nowrap flex flex-col items-center justify-center text-[#FFFFFF] text-[16px] leading-[24px] h-[32px] p-[10px] rounded-[8px] font-normal max-w-[104px] w-full'>
                     Pay Now
                   </button>
                 </div>
@@ -154,7 +154,7 @@ const InvoiceTable: React.FC = () => {
 
           {/* Invoice Items */}
           <div className="pt-10">
-            <div className="flex justify-between items-center bg-[#F1F1F1] p-[10px] rounded-r-[8px]  rounded-l-[8px]">
+            <div className="flex flex-wrap justify-between items-center bg-[#F1F1F1] p-[10px] rounded-r-[8px]  rounded-l-[8px]">
               <h1>Description</h1>
               <div className="flex items-center gap-10">
                 <h1>Qty</h1>
@@ -207,7 +207,7 @@ const InvoiceTable: React.FC = () => {
             <h1 className='text-[#101828] text-[16px] leading-[24px] font-medium'>Transactions</h1>
 
             <div className='pt-[20px]'>
-              <div className='flex items-center bg-[#F1F1F1] justify-between p-[10px] rounded-[8px]'>
+              <div className='flex  flex-wrap items-center bg-[#F1F1F1] justify-between p-[10px] rounded-[8px]'>
                 <h1 className='text-[#101828] text-[16px] leading-[24px] font-medium'>Transaction ID</h1>
                 <h1 className='text-[#101828] text-[16px] leading-[24px] font-medium'>Method</h1>
                 <h1 className='text-[#101828] text-[16px] leading-[24px] font-medium'>Date/Time</h1>
@@ -238,7 +238,7 @@ const InvoiceTable: React.FC = () => {
     return (
       <div className="pt-6">
         {/* Status Tabs - Now only shown when no invoice is selected */}
-        <div className="flex items-center gap-10 mb-4">
+        <div className="flex flex-wrap items-center gap-10 mb-4">
           {['All', 'Paid', 'Unpaid', 'Pending'].map((status) => (
             <div 
               key={status}
@@ -301,6 +301,7 @@ const InvoiceTable: React.FC = () => {
             </TableBody>
           </Table>
           <TablePagination
+            className='scrollbar-hide'
             rowsPerPageOptions={[5, 10, 15]}
             component="div"
             count={filteredData.length}

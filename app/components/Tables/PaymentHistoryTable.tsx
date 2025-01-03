@@ -318,8 +318,8 @@ const PaymentHistoryTable = () => {
   return (
     <div className="w-full">
       <div className="pt-10">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-4">
+        <div className="lg:flex lg:flex-row flex flex-col items-start justify-start lg:items-center lg:justify-between mb-6">
+          <div className="flex flex-wrap items-center lg:space-x-4 md:space-x-4">
             {['all', 'successful', 'pending', 'failed'].map((filterOption) => (
               <button
                 key={filterOption}
@@ -335,7 +335,7 @@ const PaymentHistoryTable = () => {
             ))}
           </div>
 
-          <button className="flex items-center w-[121px] gap-[10px] bg-[#5B52B6] border-[0.6px] border-[#5B52B6] rounded-[4px] p-[10px]">
+          <button className="flex lg:mt-0 mt-8 items-center w-[121px] gap-[10px] bg-[#5B52B6] border-[0.6px] border-[#5B52B6] rounded-[4px] p-[10px]">
             <Image width={20} height={20} src={Export} alt="Export" />
             <span className="text-white text-[14px] leading-[20px] font-normal">
               Export CSV
@@ -402,7 +402,7 @@ const PaymentHistoryTable = () => {
             </TableBody>
           </Table>
           <TablePagination
-            className="bg-[#F9FAFE]"
+            className="bg-[#F9FAFE] scrollbar-hide w-full"
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
             count={filteredData.length}

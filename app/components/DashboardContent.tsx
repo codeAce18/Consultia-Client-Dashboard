@@ -1,23 +1,15 @@
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Textarea } from '@/components/ui/textarea';        
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';      
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { SearchIcon } from 'lucide-react';
 import AssignedToIcon from "../../public/assets/AssignedToIcon.svg"
-
 import BrandingAssets from "../../public/assets/BrandingAssets.svg"
-
-import GuidelinesPdf  from "../../public/assets/GuidelinesPdf.svg"
-
-
 import Plus  from "../../public/assets/Plus.svg"
-
 import  CrossX  from "../../public/assets/CrossX.svg"
-
 import  Done  from "../../public/assets/Done.svg"
+import GuidelinesPdf  from "../../public/assets/GuidelinesPdf.svg"
 import {
     Sheet,
     SheetContent,
@@ -26,23 +18,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import Image from "next/image";
 import UploadIcon from "../../public/assets/UploadIcon.svg"
-
-
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-
-import NotificationIcon from "../../public/assets/NotificationIcon.svg"
-
-import ChatIcon from "../../public/assets/ChatIcon.svg"
-
-import MyProfile from "../../public/assets/MyProfile.svg"
-
-import profile from "../../public/assets/profile.svg"
-
-import Arrowdown from "../../public/assets/Arrowdown.svg"
-
 import more from "../../public/assets/more.svg"
 
 import AddCircle from "../../public/assets/AddCircle.svg"
@@ -54,13 +30,12 @@ import OngoingOrdersIcon from "../../public/assets/OngoingOrdersIcon.svg"
 import CompletedOrdersIcon from "../../public/assets/CompletedOrdersIcon.svg"
 
 import TotalValueIcon from "../../public/assets/TotalValueIcon.svg"
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import LogOutIcon from "../../public/assets/LogOutIcon.svg"
 
 import ExpenditureAnalysisChart from "./Charts/ExpenditureAnalysisChart"
-
 import OngoingTask from "./OngoingTask"
-import ConsultantCompanyLogo1 from "../../public/assets/ConsultantCompanyLogo1.svg"
 
 
 import {
@@ -77,6 +52,21 @@ import {
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CancelIcon from "../../public/assets/CancelIcon.svg";
 import PreviewIcon from "../../public/assets/PreviewIcon.svg";
+import DashboardHeader from './DashboardHeader';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 interface JobOrder {
   companyName: string;
@@ -176,8 +166,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
           : { backgroundColor: '#F5BFC1', color: '#DD2025' }
       ),
     });
-    const router = useRouter();
-    const [placeholderText, setPlaceholderText] = useState("Search...");
+
     const [fileName, setFileName] = useState<string | null>(null);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [error, setError] = useState<string | null>(null);
@@ -223,154 +212,22 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
 
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
-    const toggleOverlay = () => {
-        setIsOverlayVisible(!isOverlayVisible);
-    };
+    // const toggleOverlay = () => {
+    //     setIsOverlayVisible(!isOverlayVisible);
+    // };
 
     const priority = watch("priority");
     const consultant = watch("consultant");
 
 
-    const handleClick = () => {
-        router.push('/findaconsultant');
-    };
-   
+
 
     return (
         <div>
             {/*  Dasboard Header for the Dashboard Screen */}
-            <div className="flex justify-between">
-                <div>
-                    <div className="flex items-center gap-10">
-                        <h1 className="text-[20px] leading-[30px] text-[#101828] font-bold">Dashboard</h1>
-                        <div className="relative flex items-center w-[479px] h-[40px] mx-auto">
-                            <Input
-                                type="text"
-                                placeholder={placeholderText}
-                                onMouseEnter={() => setPlaceholderText("Search for consultants")}
-                                onMouseLeave={() => setPlaceholderText("Search...")}
-                                onClick={handleClick}
-                                className="pr-10 pl-10 py-2 border-none bg-[#F0F0F9] rounded-[100px] w-full text-gray-800 focus:outline-none focus:ring focus:ring-blue-300"
-                            />
-                            <div className="absolute left-3">
-                                <SearchIcon className="w-[24px] h-[24px] text-gray-500" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                
-
-                <div className="flex items-center gap-[10px] border-l-[1px] border-[#D0D0D3] pl-[20px]">
-                    <Sheet>
-                        {/* Custom div as the trigger */}
-                        <SheetTrigger asChild>
-                            <div className="cursor-pointer p-2">
-                                <Image width={24} height={24} src={NotificationIcon} alt="Notification Icon" />
-                            </div>
-                        </SheetTrigger>
-
-                        {/* The content of the sheet */}
-                        <SheetContent
-                            side="right"
-                            className="flex flex-col  items-start p-6 bg-white shadow-lg space-y-10"
-                        >
-                            <h1 className='text-[#101828] text-[20px] leading-[30px] font-bold'>Notifications</h1>
-                            <div className="flex  items-start gap-[10px]">
-                                {/* Image */}
-                                <Image
-                                src={ConsultantCompanyLogo1} // Replace with the actual path to your image
-                                alt="Company Logo"
-                                width={30}
-                                height={30}
-                                className="rounded-full"
-                                />
-                                {/* Notification text */}
-                                <div className="text-left">
-                                    <p className='text-[16px] leading-[22.4px] text-[#101828]'><span className="font-bold text-[16.5px] leading-[19.8px] text-[#101828]">Dora Consulting Ltd.</span> accepted your offer and has sent you a message.</p>
-
-                                    <p className="text-[16px] leading-[24px] font-normal text-[#41404B]">3 September, 2024 - 11:21 AM</p>
-                                </div>
-                            </div>
-
-                            <div className="flex  items-start gap-[10px]">
-                                {/* Image */}
-                                <Image
-                                src={ConsultantCompanyLogo1} // Replace with the actual path to your image
-                                alt="Company Logo"
-                                width={30}
-                                height={30}
-                                className="rounded-full"
-                                />
-                                {/* Notification text */}
-                                <div className="text-left">
-                                    <p className='text-[16px] leading-[22.4px] text-[#101828]'><span className="font-bold text-[16.5px] leading-[19.8px] text-[#101828]">Dora Consulting Ltd.</span> just sent you an invoice</p>
-
-                                    <p className="text-[16px] leading-[24px] font-normal text-[#41404B]">3 September, 2024 - 11:21 AM</p>
-                                </div>
-                            </div>
-
-
-                            <div className="flex  items-start gap-[10px]">
-                                {/* Image */}
-                                <Image
-                                src={ConsultantCompanyLogo1} // Replace with the actual path to your image
-                                alt="Company Logo"
-                                width={30}
-                                height={30}
-                                className="rounded-full"
-                                />
-                                {/* Notification text */}
-                                <div className="text-left">
-                                    <p className='text-[16px] leading-[22.4px] text-[#101828]'><span className="font-bold text-[16.5px] leading-[19.8px] text-[#101828]">Dora Consulting Ltd.</span> just sent you an invoice Rate him based on the job done</p>
-
-                                    <p className="text-[16px] leading-[24px] font-normal text-[#41404B]">3 September, 2024 - 11:21 AM</p>
-                                </div>
-                            </div>
-                        </SheetContent>
-                    </Sheet>
-
-                    <div>
-                        <Image  width={24} height={24}  src={ChatIcon} alt="ChatIcon"/>
-                    </div>
-
-                    <div>
-                        <div className="flex items-center gap-[10px] cursor-pointer" onClick={toggleOverlay}>
-
-                        <div>
-                            <Image width={24} height={24} src={MyProfile} alt="MyProfile" />
-                        </div>
-
-                        <div className='flex flex-col items-start'>
-                            <h1 className="text-[13px] leading-[19.5px] text-[#101828] font-semibold">Bankole Onafuwa</h1>
-                            <p className="text-[#41404B] text-[13px] leading-[19.5px] font-normal">Client</p>
-                        </div>
-
-                        <div>
-                            <Image width={16} height={16} src={Arrowdown} alt="Arrowdown" />
-                        </div>
-                    </div>
-
-                    {isOverlayVisible && (
-                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" onClick={toggleOverlay}>
-                            <div className="bg-white flex flex-col items-start gap-y-[12px] p-[8px] w-[134px] rounded-lg shadow-lg absolute top-20 right-6">
-                            <div className='flex items-center gap-[12px]'>
-                                <Image width={24} height={24} src={profile} alt="profile" />
-
-                                <h2 className='text-[#101828] text-[13px] leading-[19.5px] font-normal'>Profile</h2>
-                            </div>
-
-                            <div className='flex items-center gap-[12px]'>
-                                <Image width={24} height={24} src={LogOutIcon} alt="LogOutIcon" />
-
-                                <h2 className='text-[#101828] text-[13px] leading-[19.5px] font-normal'>Log Out</h2>
-                            </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>   
+            
+            <DashboardHeader title="Dashboard" setActiveComponent={setActiveComponent} />
+   
             
             {/* End of Dashboard Header for the Dashboard Screen */}
 
@@ -380,7 +237,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
 
 
             <div className="pt-[20px]">
-                <div className="flex items-center justify-between">
+                <div className="lg:flex lg:flex-row flex flex-col items-start justify-start lg:items-center md:items-center lg:justify-between">
                     <div>
                         <h1 className="text-[20px] leading-[30px] text-[#1B2559] font-normal">Welcome to Consultia, <span className="font-bold">Bankole</span></h1>
                     </div>
@@ -388,15 +245,14 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
                     <Sheet>
     
                         <SheetTrigger asChild>
-                            <button className="bg-[#5B52B6] flex items-center gap-[10px] rounded-[8px] p-[10px] w-[190px]">
-                            <Image width={24} height={24} src={AddCircle} alt="AddCircle" />
-                            <h1 className="text-white text-[16.5px] leading-[19.8px] font-bold">Create Job Order</h1>
+                            <button className="bg-[#5B52B6] mt-6 lg:mt-0 flex items-center gap-[10px] rounded-[8px] p-[10px] w-[190px]">
+                                <Image width={24} height={24} src={AddCircle} alt="AddCircle" />
+                                <h1 className="text-white text-[16.5px] leading-[19.8px] font-bold">Create Job Order</h1>
                             </button>
                         </SheetTrigger>
 
 
                         <SheetContent
-                            side="right"
                             className="flex flex-col overflow-y-auto items-start p-6 bg-white space-y-4 w-full max-w-md shadow-lg"
                         >
              
@@ -554,7 +410,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
 
                         {isSecondSheetOpen && (
 
-                            <SheetContent side="right" className="flex flex-col p-6 bg-white w-full max-w-md shadow-lg overflow-y-auto scrollbar-hide">
+                            <SheetContent className="flex flex-col p-6 bg-white w-full max-w-md shadow-lg overflow-y-auto scrollbar-hide">
                                 <div className="space-y-[10px]">
                                     <h1 className="text-[#101828] text-[20px] leading-[30px] font-bold">Job Order Summary!</h1>
                                     <p className="text-[#41404B] text-[16px] leading-[22.4px] font-normal max-w-[372px]">Here is the summary page showing the chosen Consultants and the project details.</p>
@@ -641,38 +497,36 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
 
                 
             <div className="pt-10">
-                <div className="grid grid-cols-4 gap-8">
-
-                    <div className="bg-[#FFFFFF] rounded-[8px] border-[1px] shadow-custom  border-[#F0F0F9] max-w-[260px] p-[16px]">
-                        <div className="flex items-center gap-[5px]">
-                            <Image width={37} height={37} src={TotalOrdersIcon} alt="TotalOrdersIcon" />
-                            <h1 className="text-[24px] leading-[28.8px] font-bold text-[#101828]">1,200</h1>
+                <div className='flex items-center justify-center'>
+                    <div className="grid lg:grid-cols-4  md:grid-cols-2 grid-cols-1 gap-4">
+                        <div className="bg-[#FFFFFF] rounded-[8px] border-[1px] shadow-custom  border-[#F0F0F9] max-w-[260px] p-[16px]">
+                            <div className="flex items-center gap-[5px]">
+                                <Image width={37} height={37} src={TotalOrdersIcon} alt="TotalOrdersIcon" />
+                                <h1 className="text-[24px] leading-[28.8px] font-bold text-[#101828]">1,200</h1>
+                            </div>
+                            <h1 className="text-[#7B91B0] pt-[20px] text-left text-[16px] leading-[24px] font-normal">Total Job Orders</h1>
                         </div>
-                        <h1 className="text-[#7B91B0] pt-[20px] text-left text-[16px] leading-[24px] font-normal">Total Job Orders</h1>
-                    </div>
-
-                    <div className="bg-[#FFFFFF] rounded-[8px] border-[1px] shadow-custom  border-[#F0F0F9] max-w-[260px] p-[16px]">
-                        <div className="flex items-center gap-[5px]">
-                            <Image width={37} height={37} src={OngoingOrdersIcon} alt="OngoingOrdersIcon" />
-                            <h1 className="text-[24px] leading-[28.8px] font-bold text-[#101828]">200</h1>
+                        <div className="bg-[#FFFFFF] rounded-[8px] border-[1px] shadow-custom  border-[#F0F0F9] max-w-[260px] p-[16px]">
+                            <div className="flex items-center gap-[5px]">
+                                <Image width={37} height={37} src={OngoingOrdersIcon} alt="OngoingOrdersIcon" />
+                                <h1 className="text-[24px] leading-[28.8px] font-bold text-[#101828]">200</h1>
+                            </div>
+                            <h1 className="text-[#7B91B0] pt-[20px] text-left text-[16px] leading-[24px] font-normal">Ongoing Job Orders</h1>
                         </div>
-                        <h1 className="text-[#7B91B0] pt-[20px] text-left text-[16px] leading-[24px] font-normal">Ongoing Job Orders</h1>
-                    </div>
-
-                    <div className="bg-[#FFFFFF] rounded-[8px] border-[1px] shadow-custom  border-[#F0F0F9] max-w-[260px] p-[16px]">
-                        <div className="flex items-center gap-[5px]">
-                            <Image width={37} height={37} src={CompletedOrdersIcon} alt="CompletedOrdersIcon" />
-                            <h1 className="text-[24px] leading-[28.8px] font-bold text-[#101828]">1,000</h1>
+                        <div className="bg-[#FFFFFF] rounded-[8px] border-[1px] shadow-custom  border-[#F0F0F9] max-w-[260px] p-[16px]">
+                            <div className="flex items-center gap-[5px]">
+                                <Image width={37} height={37} src={CompletedOrdersIcon} alt="CompletedOrdersIcon" />
+                                <h1 className="text-[24px] leading-[28.8px] font-bold text-[#101828]">1,000</h1>
+                            </div>
+                            <h1 className="text-[#7B91B0] pt-[20px] text-left text-[16px] leading-[24px] font-normal">Completed Job Orders</h1>
                         </div>
-                        <h1 className="text-[#7B91B0] pt-[20px] text-left text-[16px] leading-[24px] font-normal">Completed Job Orders</h1>
-                    </div>
-
-                    <div className="bg-[#FFFFFF] rounded-[8px] border-[1px] shadow-custom  border-[#F0F0F9] max-w-[260px] p-[16px]">
-                        <div className="flex items-center gap-[5px]">
-                            <Image width={37} height={37} src={TotalValueIcon} alt="TotalValueIcon" />
-                            <h1 className="text-[24px] leading-[28.8px] font-bold text-[#101828]">₦20,000,000</h1>
+                        <div className="bg-[#FFFFFF] rounded-[8px] border-[1px] shadow-custom  border-[#F0F0F9] max-w-[260px] p-[16px]">
+                            <div className="flex items-center gap-[5px]">
+                                <Image width={37} height={37} src={TotalValueIcon} alt="TotalValueIcon" />
+                                <h1 className="text-[24px] leading-[28.8px] font-bold text-[#101828]">₦20,000,000</h1>
+                            </div>
+                            <h1 className="text-[#7B91B0] pt-[20px] text-left text-[16px] leading-[24px] font-normal">Total Value of Job Orders</h1>
                         </div>
-                        <h1 className="text-[#7B91B0] pt-[20px] text-left text-[16px] leading-[24px] font-normal">Total Value of Job Orders</h1>
                     </div>
                 </div>
             </div>
@@ -680,7 +534,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ setActiveComponent 
 
             <div className="pt-10">
 
-                <div className="flex gap-4 w-full">
+                <div className="lg:flex lg:flex-row flex flex-col  items-center justify-center gap-4 w-full">
                     <ExpenditureAnalysisChart  />
 
 

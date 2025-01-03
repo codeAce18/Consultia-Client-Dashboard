@@ -330,14 +330,14 @@ const MessagesContent: React.FC = () => {
              {/*  Messages Header for the Dashboard Screen */}
             <div className="flex">
                 <div>
-                    <div className="flex items-center gap-10">
+                    <div className="flex  flex-wrap items-center gap-10">
                         <h1 className="text-[20px] leading-[30px] text-[#101828] font-bold whitespace-nowrap">Message</h1>
                         <div>
                             <div className="relative flex items-center w-[479px] h-[40px] mx-auto">
                                 <Input
-                                    type="text"
-                                    placeholder="Search..."
-                                    className="pr-10 pl-10 py-2 border-none bg-[#F0F0F9] rounded-[100px]  w-full text-gray-800 focus:outline-none focus:ring focus:ring-blue-300"
+                                  type="text"
+                                  placeholder="Search..."
+                                  className="pr-10 pl-10 py-2 border-none bg-[#F0F0F9] rounded-[100px]  max-w-[339px] w-full text-gray-800 focus:outline-none focus:ring focus:ring-blue-300"
                                 />
 
                                 <div className="absolute left-3">

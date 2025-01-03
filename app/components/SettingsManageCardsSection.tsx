@@ -20,11 +20,11 @@ const SettingsManageCardsSection = () => {
           </div>
 
           <div className="pt-10">
-            <div className="flex gap-20">
+            <div className="lg:flex lg:flex-row flex flex-col-reverse gap-10 lg:gap-20">
               <div className="max-w-[671px] w-full">
                 <div className="flex items-center justify-between">
                   <h1 className="text-[#A3A2AB] text-[16px] leading-[22.4px] font-normal">Card Type</h1>
-                  <div className="flex items-center gap-10">
+                  <div className="flex items-center lg:gap-10 gap-6">
                     <h1 className="text-[#5B52B6] text-[16px] leading-[22.4px] font-normal">On/Off</h1>
                     <h1 className="text-[#5B52B6] text-[16px] leading-[22.4px] font-normal">Delete</h1>
                   </div>
@@ -38,7 +38,7 @@ const SettingsManageCardsSection = () => {
                       </div>
                       <p className="text-[#A3A2AB] text-[16px] leading-[22.4px] font-normal">Guarantee Trust Bank Expires 12/26 </p>
                     </div>
-                    <div className="flex items-center gap-16">
+                    <div className="flex items-center lg:gap-16 gap-6">
                       <Switch id="two-factor-switch" />
                       <Image width={24} height={24} src={trashIcon} alt="trashIcon" />
                     </div>
@@ -51,7 +51,7 @@ const SettingsManageCardsSection = () => {
                       </div>
                       <p className="text-[#A3A2AB] text-[16px] leading-[22.4px] font-normal">Guarantee Trust Bank Expires 12/26 </p>
                     </div>
-                    <div className="flex items-center gap-16">
+                    <div className="flex items-center lg:gap-16 gap-6">
                       <Switch id="two-factor-switch" />
                       <Image width={24} height={24} src={trashIcon} alt="trashIcon" />
                     </div>
@@ -66,7 +66,7 @@ const SettingsManageCardsSection = () => {
                       </div>
                       <p className="text-[#A3A2AB] text-[16px] leading-[22.4px] font-normal">Guarantee Trust Bank Expires 12/26 </p>
                     </div>
-                    <div className="flex items-center gap-16">
+                    <div className="flex items-center lg:gap-16 gap-6">
                       <Switch id="two-factor-switch" />
                       <Image width={24} height={24} src={trashIcon} alt="trashIcon" />
                     </div>
@@ -80,7 +80,7 @@ const SettingsManageCardsSection = () => {
                       </div>
                       <p className="text-[#A3A2AB] text-[16px] leading-[22.4px] font-normal">Guarantee Trust Bank Expires 12/26 </p>
                     </div>
-                    <div className="flex items-center gap-16">
+                    <div className="flex items-center lg:gap-16 gap-6">
                       <Switch id="two-factor-switch" />
                       <Image width={24} height={24} src={trashIcon} alt="trashIcon" />
                     </div>
@@ -94,7 +94,7 @@ const SettingsManageCardsSection = () => {
                       </div>
                       <p className="text-[#A3A2AB] text-[16px] leading-[22.4px] font-normal">Guarantee Trust Bank Expires 12/26 </p>
                     </div>
-                    <div className="flex items-center gap-16">
+                    <div className="flex items-center lg:gap-16 gap-6">
                       <Switch id="two-factor-switch" />
                       <Image width={24} height={24} src={trashIcon} alt="trashIcon" />
                     </div>

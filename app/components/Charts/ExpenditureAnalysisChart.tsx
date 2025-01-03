@@ -21,9 +21,9 @@ const ExpenditureAnalysisChart = () => {
   const years = [2024, 2023, 2022];
 
   return (
-    <div className="flex flex-col shadow-custom-light items-start bg-[#FFFFFF] w-[638px] h-[336px] rounded-[8px] border-[1.06px] border-[#F8F9FA]">
+    <div className="flex flex-col shadow-custom-light items-start bg-[#FFFFFF] max-w-[538px] w-full h-[336px] rounded-[8px] border-[1.06px] border-[#F8F9FA]">
       {/* Header with Dropdown */}
-      <div className="flex items-center gap-[300px] mb-4 pt-4">
+      <div className="flex items-center lg:gap-[200px] gap-[20px] md:gap-[150px] mb-4 pt-4">
         <h2 className="text-[20px] leading-[32px] tracking-[-2%]  font-bold mr-4 whitespace-nowrap pl-10 text-[#1B2559]">Expenditure Analysis</h2>
         <select
           className="outline-none text-[14px] leading-[24px] tracking-[-2%] font-bold text-[#7B91B0]"

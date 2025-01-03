@@ -190,8 +190,8 @@ const WalletSectionContent: React.FC<TransactionsSectionContentProps> = ({transa
 
 
             <div className="pt-10">
-                <div className="flex items-start gap-32">
-                    <div className="flex items-center justify-center rounded-[10.58px] shadow-custom-lg gap-16 bg-[#FFFFFF] p-[30px] max-w-[565px] w-full">
+                <div className="flex flex-wrap items-start lg:gap-32 gap-16">
+                    <div className="flex  flex-col lg:flex-row md:flex-row items-center justify-center rounded-[10.58px] shadow-custom-lg gap-16 bg-[#FFFFFF] p-[30px] max-w-[565px] w-full">
                         <div className="space-y-[20px]">
                             <div>
                                 <h1 className="text-[#101828] text-[20px] leading-[30px] font-semibold">6500413410</h1>
@@ -355,7 +355,7 @@ const WalletSectionContent: React.FC<TransactionsSectionContentProps> = ({transa
                 </div>
 
                 {/* Statistics Content */}
-                <div className="flex items-center justify-between pt-[20px]">
+                <div className="flex flex-wrap items-center space-y-6 justify-between pt-[20px]">
                     {/* Total Inflow */}
                     <div className="flex items-center gap-10">
                     <div className="flex items-center gap-[15px]">
@@ -536,13 +536,14 @@ const WalletSectionContent: React.FC<TransactionsSectionContentProps> = ({transa
                 </TableContainer>
                 {/* Pagination */}
                 <TablePagination
-                rowsPerPageOptions={[5, 10, 15]}
-                component="div"
-                count={displayTransactions.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                    className="scrollbar-hide"
+                    rowsPerPageOptions={[5, 10, 15]}
+                    component="div"
+                    count={displayTransactions.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
         </div>

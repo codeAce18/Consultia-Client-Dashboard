@@ -103,7 +103,7 @@ const SettingsAuthenticationSection = () => {
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(() => {})} className="space-y-6 pt-10">
           {/* Email Update Section */}
-          <div className="flex gap-4 items-end">
+          <div className="flex flex-wrap gap-4 items-end">
             <FormField
               name="emailAddress"
               render={({ field }) => (
@@ -158,7 +158,7 @@ const SettingsAuthenticationSection = () => {
           </div>
 
           {/* Password Update Section */}
-          <div className="flex gap-4 items-end">
+          <div className="flex flex-wrap gap-4 items-end">
             <FormField
               name="password"
               render={({ field }) => (
@@ -215,7 +215,7 @@ const SettingsAuthenticationSection = () => {
         </form>
 
         <Dialog open={isEmailOverlayOpen} onOpenChange={setIsEmailOverlayOpen}>
-          <DialogContent className="min-h-[400px]">
+          <DialogContent className="min-h-[400px] lg:max-w-[450px] max-w-[350px] w-full rounded-[8px]">
             <DialogHeader>
               <DialogTitle className="text-[20px] pl-10">Enter verification code</DialogTitle>
               <DialogTitle className="text-[15px] pl-10">The verification code has been sent to your email just now</DialogTitle>
@@ -232,7 +232,7 @@ const SettingsAuthenticationSection = () => {
                     >
                       <InputOTPGroup className="flex gap-4 justify-center">
                         {[...Array(6)].map((_, index) => (
-                          <InputOTPSlot key={index} index={index} className="w-12 h-12 
+                          <InputOTPSlot key={index} index={index} className="lg:w-12 lg:h-12 h-8 w-8
                           border rounded-md text-center text-xl" />
                         ))}
                       </InputOTPGroup>
@@ -257,7 +257,7 @@ const SettingsAuthenticationSection = () => {
 
         {/* Password Verification Dialog */}
         <Dialog open={isPasswordOverlayOpen} onOpenChange={setIsPasswordOverlayOpen}>
-          <DialogContent className="min-h-[400px]">
+          <DialogContent className="min-h-[400px] lg:max-w-[450px] max-w-[350px] w-full rounded-[8px] ">
             <DialogHeader>
               <DialogTitle className="text-[20px] pl-10">Enter verification code</DialogTitle>
               <DialogTitle className="text-[15px] pl-10">The verification code has been sent to your email just now</DialogTitle>
@@ -276,7 +276,7 @@ const SettingsAuthenticationSection = () => {
                       >
                         <InputOTPGroup className="flex gap-4 justify-center">
                           {[...Array(6)].map((_, index) => (
-                            <InputOTPSlot key={index} index={index} className="w-12 h-12 
+                            <InputOTPSlot key={index} index={index} className="lg:w-12 lg:h-12 h-8 w-8
                             border rounded-md text-center text-xl" />
                           ))}
                         </InputOTPGroup>
@@ -348,10 +348,10 @@ const SettingsAuthenticationSection = () => {
             <h1 className="text-[16px] leading-[24px] text-[#101828] font-bold">Delete Account ?</h1>
 
 
-            <div className="flex pt-[10px] gap-[8px]">
+            <div className="lg:flex lg:flex-row flex flex-col pt-[10px] gap-[8px]">
               <p className="text-[#41404B] text-[16px] leading-[22.4px] font-normal">We do our best to give you great experience, we will be sad to see you leave.</p>
 
-              <p className="text-[#5B52B6] text-[16px] leading-[24px] font-normal">Delete Account</p>
+              <p className="text-[#5B52B6] lg:mt-0 mt-2 text-[16px] leading-[24px] font-normal">Delete Account</p>
             </div>
           </div>
         </div>

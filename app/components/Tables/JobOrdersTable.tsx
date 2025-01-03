@@ -190,8 +190,8 @@ const JobOrdersTable: React.FC = () => {
 
   return (
     <div className="pt-10">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-8">
+      <div className="lg:flex lg:flex-row flex-col items-start justify-start  lg:items-center lg:justify-between mb-4">
+        <div className="flex flex-wrap items-center gap-8 mb-8  md:mb-0 lg:mb-0 ">
           <h1
             className={`text-[#41404B] text-[16px] font-normal cursor-pointer ${statusFilter === 'All' ? 'font-semibold border-b-[4px] border-b-[#5B52B6] pb-[5px]' : ''}`}
             onClick={() => setStatusFilter('All')}
@@ -266,7 +266,7 @@ const JobOrdersTable: React.FC = () => {
                   </IconButton>
 
                   {openRow.rowId === index && openRow.filter === statusFilter && (
-                    <div className="absolute bg-white border border-gray-200 rounded-lg shadow-md p-2 mt-2 w-[120px] z-50">
+                    <div className="absolute right-10 bg-white border border-gray-200 rounded-lg shadow-md p-2 mt-2 w-[120px] z-50">
                       <div 
                         className="flex items-center p-2 cursor-pointer hover:bg-gray-100" 
                         onClick={() => handlePreview(order)}>
@@ -287,6 +287,7 @@ const JobOrdersTable: React.FC = () => {
 
         {/* Pagination Controls */}
         <TablePagination
+          className='scrollbar-hide'
           component="div"
           count={filteredData.length}
           page={page}
@@ -306,7 +307,7 @@ const JobOrdersTable: React.FC = () => {
         onClose={closeSheet}
         PaperProps={{
           sx: {
-            width: '477px',
+            width: '377px',
             padding: '24px',
           }
         }}
@@ -370,7 +371,7 @@ const JobOrdersTable: React.FC = () => {
 
 
               <div className='pt-10'>
-                <div className="bg-[#FFFFFF] w-[420px] h-[546px] p-[17.83px] overflow-y-auto scrollbar-thin">
+                <div className="bg-[#FFFFFF] max-w-[420px] w-full h-[546px] p-[17.83px] overflow-y-auto scrollbar-thin">
                   <div className="flex items-center justify-between">
                     <h1 className="text-[#101828] text-[20px] leading-[30px] font-bold">Ongoing Tasks</h1>
                   </div>
