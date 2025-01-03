@@ -156,9 +156,7 @@ const FindAConsultant = ({ setActiveComponent }: FindAConsultantProps) => {
 
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
-    const toggleOverlay = () => {
-        setIsOverlayVisible(!isOverlayVisible);
-    };
+  
 
 
 
